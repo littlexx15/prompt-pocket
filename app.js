@@ -1,0 +1,203 @@
+const STORAGE_KEY = 'prompt-pocket-v1';
+
+const starterPrompts = [
+  {
+    id: crypto.randomUUID(), title: '水果千川九宫格分镜', category: '生图',
+    tags: ['水果', '九宫格', '9:16', '手机实拍'], favorite: true, updated: Date.now(),
+    content: `参考上传的{{水果名称}}图片，生成一张竖屏 9:16、3×3 排列的水果带货九宫格分镜图。整体为真实手机拍摄质感，自然光，生活化环境，画面清晰但不过度商业精修；水果外观、颜色、大小和包装严格参考原图，不改变品种。人物只露手或局部身体，不出现完整人脸。九个镜头角度、景别和动作有明显变化，画面连续，适合抖音千川带货短视频：\n\n1. 单手托果靠近镜头\n2. 双手旋转展示\n3. 手持削皮果展示\n4. 举起咬口果定格\n5. 两半水果对镜头打开\n6. 上下叠放展示果肉\n7. 手从玻璃碗里拿果\n8. 前后错位展示两颗果\n9. 整果与切果同框收尾\n\n每格只呈现一个明确动作，主体突出，构图干净，真实果肉纹理与汁水感，避免重复机位。禁止文字、贴纸、水印、拼贴边框和完整人脸。`
+  },
+  {
+    id: crypto.randomUUID(), title: '10 秒水果千川引流视频', category: '视频',
+    tags: ['千川', '10秒', '9:16', '固定镜头'], favorite: true, updated: Date.now() - 1,
+    content: `参考上传的分镜图，生成竖屏 9:16、10 秒{{水果名称}}千川引流视频，原生手机实拍质感，快节奏切换。严格匹配参考图片中的分镜顺序、手部动作、水果外观和构图。\n\n全程运镜统一：固定机位，镜头不要推进、不要缩放、不要旋转；每段画面均由手将水果从镜头外送入或向镜头前方自然推进，随后短暂定格，展示对应鲜果特写。保持水果原比例，动作自然连贯，切换利落，光线与色调统一，保留真实果肉纹理。\n\n禁止生成九宫格，禁止画中画，禁止字幕、贴纸、水印和完整人脸，禁止改变水果品种、颜色与形状。`
+  },
+  {
+    id: crypto.randomUUID(), title: '30 秒水果信息流带货文案', category: '文案',
+    tags: ['带货文案', '黄金3秒', '卖点', '30秒'], favorite: false, updated: Date.now() - 2,
+    content: `先调研{{水果名称}}的真实卖点、产地特点、口感、适合人群、食用场景和消费者常见顾虑，再为我生成 10 条约 30 秒的信息流带货口播文案。\n\n你是一位懂人性和消费者决策的营销主播。表达真诚、有感染力、有适度夸张和激情，但必须符合广告法，不使用绝对化、虚假或无法证明的表述。每条开头都要有不同类型的黄金 3 秒钩子，快速抓住目标用户；正文突出核心卖点、差异化、稀缺感、利益点和具体食用体验，并自然化解一个购买顾虑，结尾给出清晰但不生硬的行动引导。\n\n10 条文案要从不同人群、场景、情绪或卖点切入，结构和措辞明显不同，不要同质化。不要编造价格、销量、产地认证或功效。只输出文案正文，不要数字序号；文案之间空一行。`
+  }
+];
+
+const videoSplitPrompt = {
+  id:'builtin-video-split-10s', title:'长文案按 10 秒拆分视频分镜', category:'视频',
+  tags:['分镜拆分','10秒','人物一致性','参考资产'], favorite:true, updated:Date.now()+1,
+  content:`你是信息流短视频分镜提示词专家，擅长把一段带货文案拆成 10 秒一条的 AI 视频生成提示词。\n\n我会提供：\n1. 原始文案\n2. 视频总时长，比如 10s、20s、30s\n3. 人物参考图、场景参考图、水果参考图由我自己上传给视频生成工具\n\n你的任务：根据总时长自动拆分：10s 输出 1 条视频提示词；20s 输出 2 条视频提示词；30s 输出 3 条视频提示词。每条视频都是独立生成的，不要使用“上一条继续”“保持上一条一致”“两个视频都一样”这类依赖上下文的话。\n\n拆分规则：\n1. 每 10 秒生成一个独立视频脚本。\n2. 每条口播必须控制在 70 个汉字以内。\n3. 每条口播严格依照原文，不增加原文没有的卖点、功效或承诺。\n4. 每条视频提示词必须完整包含：人物一致性、场景一致性、水果一致性、动作连贯性、镜头节奏、口播嘴型、负面词。可能发生变化的元素都要明确约束，保证各段视频的一致性。\n5. 每条都明确写明：使用上传的人物参考图作为唯一出镜人物；使用上传的场景参考图作为拍摄环境，禁止出现场景参考图中没有的元素，例如参考图没有桌子就不能生成桌子；使用上传的水果参考图作为产品外观参考。\n6. 人物不能变脸、不能换发型、不能换服装、不能多人出镜。\n7. 场景不能跳转到果园、直播间、仓库、超市、路边摊或其他参考图中不存在的环境。\n8. 水果不能变成其他水果，颜色、大小、形状和果皮质感必须与上传的水果参考图一致。\n9. 动作按照 10 秒内可以自然完成的先后顺序设计，动作精简、衔接自然，不能过多、不能乱切。\n10. 每条根据口播内容设计明确且不同的动作，例如举果、近景展示、转动水果、试吃或自然指向下方购买入口；不要每条都指向下方购买入口。\n11. 不要生成背景音乐，只保留人物口播与自然环境声。\n12. 水果禁止状态骤变；完整水果不能无过渡突然变成切开、削皮或咬过状态。若需要展示不同状态，必须通过手部动作或自然剪辑合理衔接。\n13. 人物口型必须与中文口播逐字匹配，语速自然，10 秒内说完，不漏字、不抢字、不增加口播。\n\n输出格式：\n【视频1｜10s】\n口播：\n镜头动作：\n完整AI视频提示词：\n负面词：\n\n【视频2｜10s】\n口播：\n镜头动作：\n完整AI视频提示词：\n负面词：\n\n如果总时长为 30s，则继续输出【视频3｜10s】。\n\n原始文案：\n{{原始文案}}\n\n总时长：\n{{总时长}}`
+};
+
+const detailedFruitStoryboardPrompt = {
+  id:'builtin-detailed-fruit-storyboard', title:'水果物理逻辑九宫格分镜', category:'生图',
+  tags:['九宫格','9:16','水果','物理逻辑','手机实拍'], favorite:true, updated:Date.now()+2,
+  content:`生成一张竖屏 9:16、3×3 排列的水果带货九宫格分镜图。主体水果是：{{水果名称}}。\n\n整体为真实手机拍摄质感，自然光，生活化厨房、果篮或桌面环境，画面清晰但不过度商业精修。水果外观、颜色、大小、果肉状态都必须符合{{水果名称}}的真实特征，不要改变品种。人物只露手或局部身体，不出现完整人脸。九个镜头的角度、景别和动作有明显变化，画面连续，适合抖音千川水果带货短视频。\n\n整体要求：每格只呈现一个明确动作，主体突出，构图干净。所有刀具、削皮器、果皮、果肉和手的位置关系必须符合真实物理情况。禁止水果变形，禁止果肉悬浮，禁止刀刃穿模，禁止削皮状态混乱。削皮画面必须符合真实逻辑：一侧有完整果皮，一侧已经被削掉并露出果肉，不要出现一边没皮、一边有皮、中间又突然冒出一块皮的混乱状态。禁止文字、贴纸、水印、拼贴边框、完整人脸、卡通感、棚拍感和过度广告精修。\n\n镜头1：咬口整果展示。\n一颗完整{{水果名称}}已经被咬掉一大口，果皮完整且有自然水光，咬口处露出真实果肉。单手托住咬口{{水果名称}}，把咬开的果肉面朝向镜头。近景特写，水果占画面主体，背景是虚化的一篮{{水果名称}}。咬口要大，边缘自然，不要像刀切平面，果肉新鲜、有质感。\n\n镜头2：削皮器削皮特写。\n一颗完整{{水果名称}}外皮完整，正在被削皮器削开一小条皮，露出连续的果肉带。左手托住{{水果名称}}，右手拿削皮器贴着果皮从上往下或斜向削皮。近景特写，削皮器、果皮、果肉关系清楚。削下来的果皮必须是一条薄薄的皮，贴近削皮器，不要悬浮，不要断成奇怪碎片。\n\n镜头3：半削皮整果展示。\n一颗{{水果名称}}已经削掉大面积果皮，露出大块连续、平整、干净的果肉，只在一侧保留完整果皮区域。单手托住{{水果名称}}，削皮器停在旁边或刚离开，像刚刚削完。近景特写，水果居中。果皮和果肉分界清楚，不要出现斑驳乱皮、零碎皮块或东一块西一块的状态。\n\n镜头4：水果刀切厚果肉片特写。\n主体是一颗已经完整去皮的{{水果名称}}，表面干净光滑，整体完整不变形。左手掌心平稳托住去皮{{水果名称}}，右手拿水果刀，从水果一侧外缘平稳切入，切下一片厚实、规则、带自然弧度的果肉片。极近景，刀刃、水果、切下来的果肉片和手部占满画面。果肉片必须紧贴刀刃或刚刚被切开，仍靠近主体水果。禁止果肉片悬浮，禁止插在水果内部，禁止切出不规则异形块。\n\n镜头5：圆头挖球器挖果肉球。\n一颗完整去皮的{{水果名称}}表面干净，中间被圆头挖球器挖出一个圆形凹槽，工具头里托着一颗圆形果肉球。左手托住去皮{{水果名称}}，右手拿圆头挖球器，从果肉表面向内挖起一颗小果肉球。近景特写，挖球器、圆形果肉球和水果凹槽是核心。果肉球要圆润、完整，凹槽位置真实合理，禁止像凭空长出圆球，禁止工具穿透水果。\n\n镜头6：完整果和果芯／果核对比。\n一颗完整{{水果名称}}被一只手捏住果梗或顶部提起来，旁边另一只手拿着削出来的果芯、果核或中心残渣。完整水果饱满新鲜，果芯或果核残渣明显小于完整水果。中近景，完整水果和果芯／果核都要入镜，背景是一篮{{水果名称}}。不要拍成长果皮，不要让果芯像削皮条。\n\n镜头7：果芯／果核对比加强镜。\n完整{{水果名称}}仍然悬空，另一侧手里拿着较小的果芯、果核或中心残渣。两只手都入镜，一手提着完整{{水果名称}}，一手把果芯／果核残渣放在旁边做大小对比。中近景，背景虚化。重点是完整水果和果芯／果核的大小对比，禁止果芯比例过大，禁止果芯变成果肉片。\n\n镜头8：手掰厚果肉块展示。\n两块厚实的{{水果名称}}果肉放在手里，像刚切下来的大块，表面新鲜，边缘有真实断面。双手或单手把两块果肉错开放在手心，轻轻掰开一点，靠近镜头。近景特写，果肉块占主体，背景为虚化的一篮{{水果名称}}。果肉块要大、干净、厚实，不要碎成小丁，不要变成泥状物。\n\n镜头9：两半果对镜头打开。\n一颗{{水果名称}}被切成左右两半，果皮保留在外圈，切面完整干净，果芯或果核位置清楚。双手各拿半颗{{水果名称}}，把切面朝镜头并排打开。中近景，双手、两半水果和背景果篮都能看到。两半水果大小要对称，切面干净平整，果肉厚，果芯或果核位置真实。\n\n附加负面限制：不要多余手指，不要畸形手，不要刀和手穿插错位，不要刀刃插进手指，不要水果悬浮，不要果皮悬浮，不要果肉片脱离刀刃和水果主体，不要出现不符合削皮逻辑的斑驳果皮，不要生成其他水果，不要生成文字、价格、平台 UI 或水印。`
+};
+
+const passionFruitStoryboardPrompt = {
+  id:'builtin-passion-fruit-storyboard', title:'黄金百香果九宫格分镜', category:'生图',
+  tags:['百香果','九宫格','9:16','果浆','手机实拍'], favorite:true, updated:Date.now()+3,
+  content:`生成一张竖屏 9:16、3×3 排列的黄金百香果带货九宫格分镜图。整体采用真实手机拍摄质感、自然生活光线和生活化桌面环境，画面清晰但不过度商业精修。黄金百香果必须保持真实品种特征：黄色圆润外皮、较厚的白色果皮内层、浓稠金黄色果浆和大量黑色籽。人物只露手或局部身体，不出现完整人脸。九个镜头的角度、景别和动作有明显变化，画面连续，适合抖音千川水果带货短视频。\n\n镜头1：杯中果浆静态展示。\n水果状态：透明玻璃杯里装满浓稠的黄金百香果果浆，黄澄澄的果肉里带有大量黑色籽，杯口插着勺子，背景有一篮完整黄皮百香果。\n手部动作：一只手从下方托住玻璃杯，另一只手不明显或轻扶杯身，主要是稳稳展示杯中果浆。\n\n镜头2：勺子舀起浓稠果浆。\n水果状态：透明玻璃杯中装着满满的黄金百香果果浆，果浆粘稠、颗粒感强，籽很多。\n手部动作：一只手扶住玻璃杯，另一只手拿金属勺从杯中舀起一大勺果浆，勺子抬起，果浆有轻微拉丝或下坠感。\n\n镜头3：单手剥开整颗百香果。\n水果状态：一颗完整的黄皮百香果，外皮黄色、圆润，顶部已经被剥开一部分，露出厚厚的白色果皮内层。\n手部动作：一只手托住整颗百香果，另一只手捏住掀开的果皮边缘向上撕开，展示白色内瓤。\n\n镜头4：继续撕开果皮，露出更多内层。\n水果状态：黄皮百香果已经被剥开更大面积，外层黄皮翻起，白色内层更完整地暴露出来，但果肉还没有完全露出。\n手部动作：一只手拿稳整果，另一只手继续捏住果皮边缘往外撕，动作更明显，像在一步步剥果。\n\n镜头5：双手掰开果子，露出里面的果浆。\n水果状态：一颗已经剥到白瓤层的百香果被掰开一道口子，内部黄色果浆和黑籽开始露出来。\n手部动作：双手各捏住果子的两侧，从中间往外掰开，动作明确，表现掰开瞬间。\n\n镜头6：手持半果展示果肉。\n水果状态：半颗已经打开的百香果，横截面朝向镜头，里面铺满黄色果浆和黑色籽，果肉非常饱满。\n手部动作：单手托住或捏住半颗果子的边缘，把打开的一面正对镜头展示。\n\n镜头7：另一半果的近距离展示。\n水果状态：另一块已经掰开的百香果果肉面朝向镜头，黄色果浆更满，籽粒分布清楚，外圈仍保留较厚的白色果皮。\n手部动作：双手轻轻托住半果或从两边扶住，把果肉面平稳举到镜头前，突出果浆饱满感。\n\n镜头8：两半果对镜头打开。\n水果状态：一颗百香果被完整掰成两半，两边都能看到黄色果浆和黑色籽，果肉饱满，打开状态完整。\n手部动作：双手各拿半颗果子，把两半并排打开，果肉面同时朝向镜头，完成对半展示。\n\n镜头9：把果浆倒入玻璃杯。\n水果状态：一颗打开的百香果中装满果浆，下方是一个透明高脚玻璃杯，杯中已有少量果浆或正准备接住果浆。\n手部动作：一只手拿着半颗或整块掰开的百香果，从上方向下自然倾斜，把果浆倒入玻璃杯；另一只手可以轻扶杯子或不入镜。\n\n整体物理限制：每格只呈现一个明确动作，手、果皮、白瓤、果浆、勺子和玻璃杯的位置关系必须真实。剥皮过程按照完整黄皮、局部掀开、露出白瓤、掰开露出果浆的顺序表现。果浆受重力自然下坠，不能悬浮；勺子必须真实托住果浆；倒果浆时容器上下位置和流动方向必须正确。禁止不同镜头状态混乱，禁止百香果突然恢复完整或无过渡变成两半。\n\n负面限制：不要多余手指，不要畸形手，不要手指穿模，不要果皮悬浮，不要果浆悬浮，不要黑籽散落在空中，不要勺子穿过杯子或果肉，不要玻璃杯变形，不要生成其他水果，不要改变百香果外皮颜色，不要把果浆生成液态果汁，不要文字、价格、贴纸、平台 UI、水印、拼贴边框、完整人脸、卡通感、棚拍感或过度广告精修。`
+};
+
+const passionFruitDessertStoryboardPrompt = {
+  id:'builtin-passion-fruit-dessert-storyboard', title:'黄金百香果水果捞九宫格', category:'生图',
+  tags:['百香果','水果捞','九宫格','9:16','荔枝桃片'], favorite:true, updated:Date.now()+4,
+  content:`生成一张竖屏 9:16、3×3 排列的黄金百香果水果捞带货九宫格分镜图。整体采用真实手机拍摄质感、自然生活光线和干净的生活化桌面环境，画面清晰、有食欲，但不过度商业精修。黄金百香果必须保持真实品种特征：黄色圆润外皮、较厚的白色果皮内层、浓稠金黄色果浆和大量黑色籽。水果捞配料固定为去壳去核的新鲜荔枝果肉和新鲜桃子片，可以少量搭配其他真实水果片，但不能出现汤圆、糯米圆子、珍珠或其他白色丸子。人物只露手或局部身体，不出现完整人脸。九个镜头的角度、景别和动作有明显变化，画面连续，适合抖音千川水果带货短视频。\n\n镜头1：半果摆盘展示。\n水果状态：白色圆盘里整齐摆放多半颗打开的黄金百香果，果肉面朝上，黄色果浆和黑籽清楚，果皮白瓤厚实，桌面上有完整黄皮百香果作为背景。\n手部动作：双手轻轻扶住盘子两侧，把盘子推近镜头或轻微转动展示。\n复刻重点：每半颗果都要果浆饱满，摆盘整齐，呈现“打开就满肉”的证据感。\n\n镜头2：继续调整半果盘。\n水果状态：同一盘打开的黄金百香果，果肉面朝上，果浆亮黄、籽粒密集，整体排列成一圈。\n手部动作：双手托住白盘，一只手轻轻调整盘边或缓慢转动盘子，让果肉面更正对镜头。\n复刻重点：与镜头1保持同一盘水果和相同环境，但动作更侧重展示盘中饱满果肉，适合连贯转场。\n\n镜头3：玻璃杯果浆特写。\n水果状态：透明玻璃杯里装满黄金百香果果浆，黄澄澄的果肉和黑籽混合，杯口有金属勺，背景是虚化的完整黄皮百香果。\n手部动作：一只手扶住玻璃杯，另一只手拿勺子停在杯中或轻轻搅动。\n复刻重点：果浆浓稠，透过杯壁能看到籽粒和黄色果肉，呈现“真材实料一整杯”。\n\n镜头4：勺子舀起果浆。\n水果状态：玻璃杯里装满黄金百香果果浆，表面浓稠，黑籽密集。\n手部动作：一只手托住杯子，另一只手用金属勺从杯中舀起一大勺果浆，勺子抬到杯口上方。\n复刻重点：勺子装满果浆，果浆受重力轻微下坠，突出浓稠、饱满和籽多。\n\n镜头5：果浆倒入荔枝桃片水果碗。\n水果状态：干净白色碗里放着多颗去壳去核的新鲜荔枝果肉和新鲜桃子片，黄金百香果果浆正从透明玻璃杯中倒入碗里。荔枝保留真实半透明果肉纹理和自然不规则轮廓，桃子片保留淡粉色果皮边缘与浅色果肉。\n手部动作：一只手倾斜玻璃杯，把果浆倒在荔枝和桃子片上；另一只手轻扶碗边。\n复刻重点：倒浆轨迹连续清楚，果浆准确落在荔枝和桃子片上，形成自然浇满的视觉。\n\n镜头6：果浆覆盖荔枝桃片。\n水果状态：白色碗里的荔枝果肉和桃子片已经铺上一层黄金百香果果浆，黑籽和黄色果肉自然覆盖在水果表面，仍能清楚辨认荔枝与桃片。\n手部动作：手拿玻璃杯或勺子停在碗上方，像刚刚倒完，或者轻轻补倒少量果浆。\n复刻重点：突出果浆已经均匀铺满，每颗荔枝和每片桃子都被黄色果浆自然包裹。\n\n镜头7：勺子搅拌荔枝桃片水果捞。\n水果状态：白色碗中有黄金百香果果浆、完整荔枝果肉和桃子片，果浆已经流到碗底，颜色明亮。\n手部动作：一只手扶住碗，另一只手拿勺子从碗边往中间缓慢搅拌，把果浆、荔枝和桃子片拌匀。\n复刻重点：勺子真实带动果浆和水果移动，表现拌开即可食用的清爽感；水果不能被搅碎或变形。\n\n镜头8：勺子舀起一口成品。\n水果状态：碗中的百香果果浆已经与荔枝、桃子片拌匀，表面能看到黑籽、黄色果肉、半透明荔枝果肉和带淡粉色边缘的桃子片。\n手部动作：一只手扶碗，另一只手用勺子舀起一口，勺子里同时带有浓稠果浆、荔枝果肉或桃子片。\n复刻重点：勺子里的内容丰富，果浆自然裹住真实水果，呈现酸甜水果捞一口满足的效果。\n\n镜头9：成品水果捞静态收尾。\n水果状态：白色碗里的百香果水果捞已经拌好，黄金果浆均匀覆盖在荔枝果肉和桃子片上，表面黑籽清晰，食材仍能明确辨认。\n手部动作：一只手扶住碗边，另一只手拿勺子停在碗边或轻轻托起一块水果，准备食用。\n复刻重点：碗体干净，果浆分布均匀，荔枝和桃片新鲜完整，画面酸甜清爽、有食欲，作为完整收尾镜头。\n\n整体连续性与物理限制：每格只呈现一个明确动作。镜头1至2使用同一只白盘；镜头3至4使用同一个透明玻璃杯和金属勺；镜头5至9使用同一只白碗、同一批荔枝果肉和桃子片。果浆必须浓稠并受重力自然流动，倒浆轨迹连续，勺子必须真实托住果浆与水果。食材位置变化必须与倒入、搅拌和舀起动作一致，禁止状态骤变、悬浮、穿模或无动作自行移动。\n\n负面限制：禁止汤圆，禁止糯米圆子，禁止小圆子，禁止珍珠，禁止西米球，禁止白色丸子，禁止把荔枝生成规则光滑的人工球体；不要多余手指，不要畸形手，不要手指、勺子、杯子或碗穿模，不要果浆悬浮，不要水果悬浮，不要把浓稠果浆生成清水或稀果汁，不要生成其他无关食材，不要改变黄金百香果、荔枝和桃子的真实外观，不要文字、价格、贴纸、平台 UI、水印、拼贴边框、完整人脸、卡通感、棚拍感或过度广告精修。`
+};
+
+const citrusSegmentStoryboardPrompt = {
+  id:'builtin-citrus-segment-storyboard', title:'柑橘类果肉质感九宫格', category:'生图',
+  tags:['柑橘类','九宫格','9:16','果肉纹理','通用模板'], favorite:true, updated:Date.now()+5,
+  content:`生成一张竖屏 9:16、3×3 排列的柑橘类水果带货九宫格分镜图。主体水果是：{{水果名称}}。\n\n本提示词适用于红心柚、白心柚、西柚、橘子、橙子等具有独立果瓣、汁胞、果瓣膜和白瓤结构的柑橘类水果。必须根据{{水果名称}}的真实品种特征自动匹配果实大小、果瓣大小、果肉颜色、汁胞形态、果瓣弧度、果瓣膜厚度和白瓤结构：红心柚果瓣较大且呈粉红至橙红色；西柚果瓣大小与色泽符合真实西柚；橘子或橙子的果瓣相对较小，不能错误生成红心柚一样的巨大扇形果瓣。不得混用品种特征，不得生成其他水果。\n\n整体采用真实手机拍摄质感、自然生活光线和生活化桌面或果篮环境，画面清晰但不过度商业精修。人物只露手或局部身体，不出现完整人脸。九个镜头的角度、景别和动作有明显变化，画面连续，适合抖音千川水果带货短视频。每格只呈现一个明确动作，手部大小与所选水果的实际尺寸匹配。\n\n镜头1：双手轻掰大瓣果肉。\n水果状态：一整瓣已经剥掉外膜的{{水果名称}}果肉，保持该水果真实的果瓣形状、颜色和大小，汁胞细长饱满，果瓣完整。\n手部动作：双手拇指和食指捏住果肉两侧，从中间轻轻向外掰开，让果肉纹理自然裂开一点。\n复刻重点：果肉保持完整，汁胞清楚，动作轻柔，不要把果肉捏碎。若所选水果果瓣较小，手指动作和画面比例必须相应缩小。\n\n镜头2：果肉中间撕开特写。\n水果状态：{{水果名称}}果肉从中间被撕开一道自然缝隙，可以看到内部一根根真实汁胞排列，颜色符合所选品种。\n手部动作：两只手分别捏住果肉上方两侧，缓慢向左右拉开。\n复刻重点：拍摄撕开瞬间，果肉纤维自然拉开但不能断得过碎，表现饱满多汁。\n\n镜头3：单瓣果肉横向展示。\n水果状态：一瓣或一块完整的{{水果名称}}果肉，呈符合真实品种的月牙形、扇形或自然不规则果肉块，表面汁胞密集。\n手部动作：双手指尖捏住果肉两端，把果肉横向举到镜头前展示。\n复刻重点：果肉厚实、鲜亮、水润，指尖不要遮住主体，突出真实分量感。\n\n镜头4：手托完整果瓣侧面。\n水果状态：一整瓣{{水果名称}}果肉横放在手心，果肉外侧保留少量白色果瓣膜或底部白瓤，果肉层次清楚。\n手部动作：单手手心托住整瓣果肉，另一只手轻轻扶住边缘。\n复刻重点：拍清侧面层次，果肉与白膜、白瓤形成真实对比，突出果肉厚度和果瓣大小。\n\n镜头5：完整果瓣正面纹理特写。\n水果状态：一整瓣剥好的{{水果名称}}果肉正对镜头，汁胞沿果瓣结构自然排列，颜色鲜润，表面有自然水光。\n手部动作：双手或单手从底部托住果肉，稳定停住展示。\n复刻重点：不做大动作，作为证据镜头，让观众看清果肉纤维、汁胞排列和饱满度。\n\n镜头6：多瓣果肉叠放展示。\n水果状态：多瓣{{水果名称}}果肉整齐叠放，保持每瓣真实的弧度、尺寸和颜色，顶部果肉纹理清晰。\n手部动作：单手或双手托住叠好的果肉，轻轻向镜头靠近。\n复刻重点：表现果肉多、瓣瓣饱满的量感，叠放整齐但自然，不要粘连成一整块，不要散乱。\n\n镜头7：手指或小刀挑开外膜。\n水果状态：一瓣{{水果名称}}外面仍带有真实白色或半透明果瓣膜，内部果肉已经露出一部分。\n手部动作：一只手托住果瓣，另一只手用指尖或小水果刀沿果瓣膜边缘轻轻挑开，再把薄膜撕开。\n复刻重点：白膜与果肉边界清楚，表现去膜后露出果肉的过程；工具只接触薄膜，不能切断或刺穿果肉。\n\n镜头8：去膜后的完整果瓣展示。\n水果状态：一整瓣{{水果名称}}已经基本剥掉外膜，果肉完整露出，边缘保持符合该水果的自然弧度。\n手部动作：手从底部托住整瓣果肉，轻轻旋转或向前送近镜头。\n复刻重点：展示剥好后的完整成品状态，果肉干净、完整、水润，不能缺块或变形。\n\n镜头9：极近景展示果肉汁胞。\n水果状态：{{水果名称}}果肉极近距离特写，汁胞一粒粒自然鼓起，表面带有真实水光，色泽符合所选品种。\n手部动作：手指轻捏果肉边缘，让果肉靠近镜头后定格。\n复刻重点：作为质感收尾镜头，突出汁胞饱满、颗粒分明和新鲜多汁；不能用力挤压，不能让汁胞爆裂成泥。\n\n整体连续性与物理限制：九格中的水果必须始终是同一种{{水果名称}}，颜色、果瓣形状、尺寸、成熟度和汁胞形态保持一致。果瓣从带膜、挑膜到去膜的状态变化必须符合真实顺序。手指只能捏住或托住果肉边缘，不能插入果肉。小刀只允许挑开薄膜，刀尖与手指保持安全距离。果肉受到手部支撑，不能悬浮。\n\n负面限制：不要多余手指，不要畸形手，不要手指穿模，不要刀刃插入手指或穿透果肉，不要果肉悬浮，不要汁胞脱离果肉漂浮，不要果瓣无故变大或缩小，不要把橘子、橙子或西柚生成红心柚尺寸，不要把红心柚生成小橘瓣，不要混合不同柑橘品种，不要果肉碎成泥，不要不真实的荧光色，不要文字、价格、贴纸、平台 UI、水印、拼贴边框、完整人脸、卡通感、棚拍感或过度广告精修。`
+};
+
+const pomeloOpeningStoryboardPrompt = {
+  id:'builtin-pomelo-opening-storyboard', title:'红心柚开果取瓣九宫格', category:'生图',
+  tags:['红心柚','开果','九宫格','9:16','手机实拍'], favorite:true, updated:Date.now()+6,
+  content:`生成一张竖屏 9:16、3×3 排列的红心柚带货九宫格分镜图。整体采用真实手机拍摄质感、自然生活光线和生活化桌面或果篮环境，画面清晰但不过度商业精修。红心柚必须保持同一品种和同一批次的真实特征：外皮黄绿色、白瓤较厚、果瓣较大、果肉呈粉红至橙红色、汁胞细长饱满。人物只露手或局部身体，不出现完整人脸。九个镜头的角度、景别和动作有明显变化，构成从成品果肉、质感特写、开果取瓣到完整外观的连续带货展示。\n\n镜头1：盘中剥好果肉展示。\n水果状态：白色盘子里放着多瓣已经剥掉外膜的红心柚果肉，果肉呈粉红至橙红色，汁胞饱满，瓣形完整。\n手部动作：无明显手部动作，或手从盘边轻轻扶住盘子，把剥好的果肉推近镜头展示。\n复刻重点：果肉一瓣瓣完整摆好，呈现剥完即可食用的状态，强调果肉分量和干净度。\n\n镜头2：红心柚汁胞极近景。\n水果状态：红心柚果肉极近距离，果肉纤维和细长汁胞密集排列，表面有自然水光，颜色鲜红透亮。\n手部动作：手指在画面边缘轻轻托住果肉并保持不动，让果肉贴近镜头。\n复刻重点：作为质感镜头，集中呈现汁胞纹理，不做大动作，突出饱满多汁感。\n\n镜头3：果肉纹理横向特写。\n水果状态：一瓣红心柚果肉横向贴近镜头，汁胞像细长颗粒一样自然排列，果肉表面饱满有光泽。\n手部动作：手指轻捏果肉两侧，把果肉稳稳举到镜头前。\n复刻重点：角度比镜头2更横向，重点表现果肉厚度和汁胞密度，手指不能遮挡主体。\n\n镜头4：半颗柚子碗状装满果肉。\n水果状态：半颗柚子外壳像自然果碗一样托着多瓣剥好的红心柚果肉，果肉整齐堆放其中，黄色外皮和厚白瓤清楚可见。\n手部动作：单手托住半颗柚子外壳，另一只手轻扶边缘，把装满果肉的半柚朝镜头展示。\n复刻重点：作为果肉分量证据镜，半颗柚子壳里堆满完整红肉，画面饱满但排列自然。\n\n镜头5：半柚果肉正面展示。\n水果状态：半颗柚子外壳中摆放一大瓣完整红心柚果肉，果肉竖直立起，红色汁胞面朝镜头。\n手部动作：单手托住半柚外壳，稳定停住展示。\n复刻重点：果瓣像自然扇面一样立起，突出瓣大、肉厚和颜色红；果瓣必须受到果壳支撑，不能悬浮。\n\n镜头6：剥开整颗柚子露出红肉。\n水果状态：一颗完整红心柚已经剥开部分黄绿色外皮和厚白瓤，内部红色果肉露出一部分，白色果瓣膜仍包裹着部分果瓣。\n手部动作：双手从两侧自然扒开柚子外皮和白瓤，让内部红色果肉逐渐露出来。\n复刻重点：表现真实开果过程，手指抓住外皮与白瓤向外扒开，红肉从白瓤中露出，呈现开盲盒般的视觉。\n\n镜头7：手从白膜中取出果瓣。\n水果状态：柚子外皮、白瓤和果瓣膜已经被扒开，一大瓣红心柚果肉正从内部被取出，旁边仍保留真实白瓤和内膜。\n手部动作：一只手托住剥开的柚子，另一只手捏住完整红心柚果瓣的边缘，缓慢向外抽出。\n复刻重点：表现从果壳里取出完整果瓣，果瓣不能破碎、断裂或变形，动作方向清楚。\n\n镜头8：果瓣取出过程加强。\n水果状态：与镜头7为同一个红心柚和同一瓣果肉，红心柚果瓣已经从白色果瓣膜中抽出大半，果肉露出更多，白色内膜被自然拉开，果肉表面汁胞清楚。\n手部动作：手指继续捏住果瓣边缘向外拉出，另一只手固定柚子壳。\n复刻重点：比镜头7更近，果瓣位置沿同一方向继续移动，强调果瓣完整剥离和果肉饱满，不能突然换成果瓣完全脱离或另一种形状。\n\n镜头9：完整柚子外观展示。\n水果状态：一颗完整红心柚放在桌面或果篮前，外皮黄绿色，表面有自然水光，果形圆润饱满，保持未切开状态。\n手部动作：无明显手部动作，或单手轻轻扶住完整柚子，让完整外观正对镜头。\n复刻重点：作为整果收尾镜头，果皮干净自然、果形饱满，不得切开或露出果肉。\n\n整体连续性与物理限制：每格只呈现一个明确动作。所有红心柚的外皮颜色、白瓤厚度、果肉颜色、成熟度和汁胞形态保持一致。镜头6至8必须符合真实的扒开外皮、露出果瓣、从白膜中抽出果瓣的连续顺序；手指必须实际接触并支撑水果，果肉、果瓣和果壳不能悬浮。镜头7与镜头8使用同一个剥开的柚子和同一瓣果肉，手的位置、抽出方向与果瓣形状保持连续。\n\n负面限制：不要多余手指，不要畸形手，不要手指穿模，不要果肉悬浮，不要果瓣膜悬浮，不要汁胞脱离果肉漂浮，不要果瓣碎裂成小块，不要把红心柚生成橘子或西柚，不要外皮突然改变颜色，不要把白瓤生成果肉，不要让半柚果碗变形，不要镜头7和镜头8使用不同果瓣，不要文字、价格、贴纸、平台 UI、水印、拼贴边框、完整人脸、卡通感、棚拍感或过度广告精修。`
+};
+
+const citrusOpeningServingStoryboardPrompt = {
+  id:'builtin-citrus-opening-serving-storyboard', title:'柑橘类开果取瓣九宫格', category:'生图',
+  tags:['柑橘类','开果取瓣','九宫格','9:16','通用模板'], favorite:true, updated:Date.now()+7,
+  content:`生成一张竖屏 9:16、3×3 排列的柑橘类水果带货九宫格分镜图。主体水果是：{{水果名称}}。\n\n适用范围：红心柚、白心柚、西柚、橘子、橙子等具有外皮、白瓤、果瓣膜和独立果瓣结构的柑橘类水果。必须根据{{水果名称}}自动匹配真实的整果尺寸、外皮颜色与纹理、白瓤厚度、果瓣大小、果肉颜色、汁胞形状和剥开方式。柚子可以使用较大的半果外壳承装多瓣果肉；西柚、橘子和橙子必须使用符合其真实尺寸的半果外壳与果瓣，不能被放大成巨大的柚子。若所选水果不适合徒手从厚白瓤中抽出巨大果瓣，则保持相同手部动作逻辑，但按该水果真实结构表现为剥开外皮、分离果瓣膜并取出完整果瓣。\n\n整体采用真实手机拍摄质感、自然生活光线和生活化桌面或果篮环境，画面清晰但不过度商业精修。人物只露手或局部身体，不出现完整人脸。九个镜头的角度、景别和动作有明显变化，每格只呈现一个明确动作，适合抖音千川水果带货短视频。\n\n镜头1：盘中剥好果肉展示。\n水果状态：白色盘子里放着多瓣已经剥掉外膜的{{水果名称}}果肉，果肉颜色、汁胞形态和果瓣大小符合该水果的真实特征，瓣形完整。\n手部动作：无明显手部动作，或手从盘边轻轻扶住盘子，把剥好的果肉推近镜头展示。\n复刻重点：果肉一瓣瓣完整摆放，呈现剥完即可食用的状态，强调果肉分量与干净度；盘子尺寸与果瓣大小关系合理。\n\n镜头2：果肉汁胞极近景。\n水果状态：{{水果名称}}果肉极近距离，真实果肉纤维和汁胞密集排列，表面带有自然水光，色泽符合所选品种。\n手部动作：手指在画面边缘轻轻托住果肉并保持不动，让果肉贴近镜头。\n复刻重点：集中表现汁胞纹理，不做大动作，突出新鲜、饱满和多汁感。\n\n镜头3：果肉纹理横向特写。\n水果状态：一瓣{{水果名称}}果肉横向贴近镜头，汁胞按照该水果的真实结构自然排列，果肉表面饱满有光泽。\n手部动作：手指轻捏果肉两侧，把果肉稳稳举到镜头前。\n复刻重点：角度比镜头2更横向，突出果肉厚度与汁胞密度，指尖不能遮挡主体。\n\n镜头4：半果外壳装满果肉。\n水果状态：半颗{{水果名称}}的外壳像自然果碗一样托着多瓣剥好的同品种果肉，果肉整齐堆放其中，外皮与白瓤清楚可见。半果外壳、果瓣和手的比例必须符合该水果真实尺寸。\n手部动作：单手托住半果外壳，另一只手轻扶边缘，把装满果肉的半果朝镜头展示。\n复刻重点：作为果肉分量证据镜，半果外壳中装满同一种水果的完整果瓣，画面饱满但不能堆得违反重力或超出真实容量。\n\n镜头5：半果中的完整果瓣正面展示。\n水果状态：半颗{{水果名称}}外壳中摆放一瓣完整果肉，果瓣自然立起，汁胞面朝镜头，颜色和形状符合该水果。\n手部动作：单手托住半果外壳，稳定停住展示。\n复刻重点：果瓣受到果壳与其他果肉的真实支撑，突出瓣形完整、果肉厚实和颜色鲜亮，不能悬浮。\n\n镜头6：剥开整果露出果肉。\n水果状态：一颗完整{{水果名称}}已经剥开部分外皮和白瓤，内部果肉露出一部分，果瓣膜仍包裹着部分果瓣。外皮与白瓤厚度必须符合所选水果，不能把薄皮橘子生成厚皮柚子。\n手部动作：双手从两侧自然扒开外皮和白瓤，让内部果肉逐渐露出。\n复刻重点：表现真实开果过程，手指实际抓住外皮向外剥开，果肉从白瓤或果瓣膜中露出，具有开果揭晓感。\n\n镜头7：手从果瓣膜中取出果瓣。\n水果状态：{{水果名称}}的外皮和果瓣膜已经被扒开，一瓣完整果肉正从内部被取出，旁边仍保留符合该水果结构的白瓤和内膜。\n手部动作：一只手托住剥开的水果，另一只手捏住完整果瓣边缘，缓慢向外取出。\n复刻重点：突出从果壳或果瓣膜中取出完整果瓣，果瓣不能破碎、断裂或变形，动作方向明确。\n\n镜头8：果瓣取出过程加强。\n水果状态：与镜头7使用同一颗{{水果名称}}和同一瓣果肉，果瓣已经从内膜中取出大半，果肉露出更多，果瓣膜被自然拉开，汁胞清楚可见。\n手部动作：手指继续捏住果瓣边缘沿同一方向向外取出，另一只手固定果壳。\n复刻重点：镜头更近，强调果瓣完整分离和果肉饱满；果瓣位置、形状与手部方向必须承接镜头7，不能突然换成果瓣完全脱离或其他尺寸。\n\n镜头9：完整水果外观展示。\n水果状态：一颗完整{{水果名称}}放在桌面或果篮前，外皮颜色、表面纹理和果形符合该水果的真实特征，带有自然水光，保持未切开状态。\n手部动作：无明显手部动作，或单手轻轻扶住完整水果，让外观正对镜头。\n复刻重点：作为整果收尾镜头，果皮干净自然、果形饱满，不能切开或露出果肉。\n\n整体连续性与物理限制：九格必须始终使用同一种{{水果名称}}，外皮、白瓤、果瓣膜、果肉颜色、成熟度和汁胞形态保持一致。镜头6至8必须遵循真实的剥开外皮、露出果瓣、分离果瓣膜、取出果瓣的顺序。镜头7与镜头8使用同一颗水果、同一瓣果肉和相同的取出方向。手指必须实际接触并支撑水果，果瓣、外壳和果肉不能悬浮。\n\n负面限制：不要多余手指，不要畸形手，不要手指穿模，不要果肉、果瓣膜或果壳悬浮，不要汁胞脱离果肉漂浮，不要果瓣碎裂成泥，不要不同柑橘品种混合，不要把橘子或橙子生成巨大柚子，不要把柚子生成小橘子，不要外皮颜色和厚度不符合所选水果，不要让半果外壳容量违反真实比例，不要镜头7和镜头8使用不同果瓣，不要文字、价格、贴纸、平台 UI、水印、拼贴边框、完整人脸、卡通感、棚拍感或过度广告精修。`
+};
+
+const fruitFunctionalVideoPrompt = {
+  id:'builtin-fruit-functional-video-scripts', title:'水果四类功能镜头脚本', category:'视频',
+  tags:['10秒','功能镜头','随机切入','信息流','脚本策划'], favorite:true, updated:Date.now()+8,
+  content:`你是水果信息流短视频分镜策划。\n\n请围绕{{水果名称}}，分别为以下 4 类功能镜头生成 4 条相互独立的 10 秒视频脚本：\n\n环境开场\n果实展示\n卖点冲击\n发货收尾\n\n每条视频只围绕一个核心切入方向展开，不要把所有适用画面都拍进去。请从对应候选池中随机选择一个最适合{{水果名称}}真实特征和带货逻辑的方向，作为本条视频的唯一主题，并保持画面逻辑统一、动作连贯。\n\n候选池如下：\n\n环境开场：果园外景／整箱摆放／开箱展示／仓库环境／整堆水果远景\n\n果实展示：单果摆放／手拿水果／果皮细节／水珠果粉细节／外观展示\n\n卖点冲击：切果／果肉切面／汁水感／果肉纹理近景／咬开果肉\n\n发货收尾：称重／套网套／装箱／封箱／贴快递单／打包流程\n\n要求：\n\n1. 共输出 4 条脚本，依次对应环境开场、果实展示、卖点冲击、发货收尾，每条时长严格为 10 秒。\n2. 每条脚本只选择候选池中的一个切入方向，不要在同一条视频里罗列或拍完该类别的全部候选画面。\n3. 4 条脚本必须明显不同，避免套用同一个结构或相同的动作模板。\n4. 不要固定使用“远景→中景→特写”的景别顺序。\n5. 不要固定都从水果外观展示开始。\n6. 4 条脚本之间，必须在场景、景别、运镜、动作、人物、道具这 6 项中至少变化 3 项。\n7. 动作数量要适合 10 秒内自然完成，不能堆叠过多动作，不能无逻辑乱切。\n8. 所有水果的外观、果皮、果肉、汁水、大小、采摘方式和包装方式，都必须符合{{水果名称}}的真实特征，不得套用其他水果特征。\n9. 口播内容必须与本条功能目标和所选画面直接对应，不要空泛重复，不要编造无法确认的产地、价格、销量、功效或认证。\n10. 文案表达自然、有信息流节奏，但符合广告法，禁止绝对化和虚假承诺。\n11. 如果某个候选方向不符合{{水果名称}}的真实特征，例如该水果没有明显果粉、通常不使用网套，必须从同一候选池改选更合理的方向。\n12. 只输出策划结果，不要解释选择过程，不要额外增加第五条视频。\n\n每条严格按照以下格式输出：\n\n【功能镜头名称】\n本次随机切入方向：\n功能目标：\n0—3 秒画面：\n0—3 秒口播：\n3—6 秒画面：\n3—6 秒口播：\n6—10 秒画面：\n6—10 秒口播：\n拍摄重点：`
+};
+
+const fourScriptsToStoryboardPrompt = {
+  id:'builtin-four-scripts-to-storyboards', title:'4类脚本转九宫格分镜图', category:'生图',
+  tags:['四类脚本','九宫格','9:16','手机实拍','审核遮挡'], favorite:true, updated:Date.now()+9,
+  content:`你是水果信息流短视频分镜图策划。请根据下面提供的 4 条独立 10 秒视频脚本，分别生成 4 张独立的竖屏 9:16、3×3 九宫格分镜图。4 条脚本通常对应环境开场、果实展示、卖点冲击、发货收尾。\n\n四条脚本内容：\n{{四个脚本内容}}\n\n输出任务：\n1. 每条脚本对应生成 1 张独立图片，共 4 张图片。\n2. 每张图片必须是竖屏 9:16、严格 3×3 排列、总计 9 格的九宫格分镜图。\n3. 禁止把 4 条脚本合并成一张图；禁止十二宫格；禁止 4×3、3×4、2×2 或其他宫格数量；禁止单张图片出现超过或少于 9 个镜头。\n4. 每张九宫格只表现对应脚本的一个核心切入方向，不要擅自混入其他三条脚本的主题。\n5. 九个画面围绕该条 10 秒脚本拆解为连贯、可执行的动作细节和不同景别，保持同一场景、同一批水果、同一人物手部、同一道具和一致光线。\n6. 每格只呈现一个明确动作。九格在角度、景别、构图或动作阶段上有变化，但不能为了变化而无逻辑乱切。\n\n画面风格：\n- 真实原生手机拍摄质感，自然生活光线，轻微手持感，生活化果园、桌面、仓库、包装区或脚本指定环境。\n- 画面清晰、真实、有食欲，但不过度商业精修，不要棚拍感、卡通感、CG 感或塑料质感。\n- 水果品种、颜色、大小、果皮纹理、果肉颜色、成熟度和包装必须严格匹配脚本中的水果，并在九格及四张图片之间保持一致。\n- 果肉必须新鲜水润，带有符合该水果的自然水光、汁胞或纤维质感，禁止果肉干巴、发柴、萎缩、粉化或失去水分。\n\n审核遮挡要求：\n- 如果画面中出现完整真人、清晰人物面部或可能触发审核的人体区域，必须使用纯白色、不透明、边缘整齐的方形色块进行局部遮挡。\n- 如果画面涉及果芯、果核或需要遮挡的果实中心部位，使用纯白色、不透明方块准确覆盖对应区域。\n- 白色方块只遮挡需要遮挡的位置，不要覆盖主要水果卖点、手部动作或整幅画面，不要使用马赛克、模糊、黑条、贴纸、表情或文字代替。\n- 优先只露手或局部身体，避免出现完整人脸；没有真人或果芯／果核的镜头不要无故添加白色方块。\n\n水果形态与物理限制：\n- 每颗水果只能有符合真实品种的一个顶部、一个底部和正常数量的果蒂或果柄。\n- 禁止水果变形，禁止多头、多屁股、多蒂、双蒂、重复蒂、额外凹陷、粘连果、融合果或不对称畸形。\n- 禁止同一颗水果在相邻镜头中突然改变大小、形状、颜色、成熟度或品种。\n- 切果、剥皮、咬开、称重、装箱和封箱过程必须符合真实动作顺序与物理关系。\n- 手、刀具、果皮、果肉、包装材料和水果之间不能穿模或悬浮。\n- 切面和果肉结构必须符合该水果真实内部结构，不能凭空多出果核、果蒂或另一颗水果结构。\n\n九格拆分原则：\n- 根据每条脚本的 0—3 秒、3—6 秒、6—10 秒内容，把动作拆成 9 个连续但不重复的关键瞬间。\n- 可使用建立画面、动作准备、动作开始、动作过程、核心细节、卖点特写、动作完成、结果展示和定格收尾等阶段，但必须服从原脚本，不要机械套用固定顺序。\n- 环境开场重点表现环境可信度和水果来源；果实展示重点表现外观、大小和果皮细节；卖点冲击重点表现切面、汁水和果肉质感；发货收尾重点表现称重、包装或发货动作的真实流程。\n\n全局负面词：禁止十二宫格，禁止多于或少于九格，禁止把四张图拼成一张，禁止果子变形，禁止果子多头、多屁股、多蒂、双蒂或重复果柄，禁止果肉干巴、不水润、萎缩或发柴，禁止水果悬浮，禁止手部畸形，禁止多余手指，禁止穿模，禁止状态骤变，禁止混入其他水果，禁止人物变脸或多人出镜，禁止无关道具，禁止场景跳变，禁止文字、价格、字幕、平台 UI、水印、品牌标识、装饰贴纸、花哨边框、卡通渲染、棚拍感和过度广告精修。\n\n生成顺序：先生成“环境开场”九宫格，再生成“果实展示”九宫格，然后生成“卖点冲击”九宫格，最后生成“发货收尾”九宫格。每次生成均为一张独立的 9:16 九宫格图片。`
+};
+
+const storyboardToTenSecondVideoPrompt = {
+  id:'builtin-storyboard-to-10s-video', title:'分镜转10秒写实带货视频', category:'视频',
+  tags:['分镜转视频','10秒','写实质感','手机实拍','带货视频'], favorite:true, updated:Date.now()+10,
+  content:`根据提供的参考分镜，生成一条 10 秒写实质感水果带货视频。\n\n参考分镜内容：\n{{分镜内容}}\n\n核心要求：\n1. 严格依照参考分镜中的水果品种、场景、构图、人物手部、道具、动作顺序和核心卖点生成视频，不要擅自添加分镜中没有的动作、人物、场景或产品。\n2. 视频时长严格为 10 秒，竖屏 9:16，真实原生手机拍摄质感，自然生活光线，轻微真实手持感，画面清晰但不过度商业精修。\n3. 将分镜动作按 10 秒内能够自然完成的顺序连贯呈现。每个动作有明确的开始、过程和完成状态，节奏利落但不能无逻辑乱切。\n4. 禁止生成九宫格、拼图、画中画、分屏、边框或静态分镜排版，输出必须是一条正常连续播放的单画面视频。\n5. 禁止生成任何白色方框、白色色块、马赛克、模糊遮挡、黑条、贴纸或审核遮挡图层。即使参考分镜中存在白色方块，也必须在视频中移除，不得复刻。\n\n水果一致性：\n- 全程保持同一种水果，品种、颜色、大小、形状、果皮纹理、成熟度、果蒂数量和果肉状态一致。\n- 每颗水果只能拥有符合真实品种的一个顶部、一个底部和正常数量的果蒂或果柄。\n- 禁止水果多头、多屁股、多蒂、双蒂、重复果柄、额外凹陷、融合、粘连、拉长、压扁或其他畸形。\n- 禁止同一颗水果在动作过程中突然改变大小、颜色、形状、品种或成熟度。\n- 切开、剥皮、掰开、削皮、取果肉或咬开后的状态变化，必须由画面中的真实动作自然产生；禁止完整水果无动作突然变成切果、咬口果或去皮果。\n- 果肉必须新鲜水润，符合该水果的真实纤维、汁胞、果核或果芯结构，禁止干巴、发柴、萎缩、粉化或塑料质感。\n\n动作与物理逻辑：\n- 手必须真实接触、托住或操作水果和道具，禁止水果、果肉、果皮、刀具、勺子或包装材料悬浮。\n- 禁止手指、刀具、果皮、果肉、杯子、碗或包装相互穿模。\n- 刀切、削皮、掰果、倒果浆、称重、装箱和封箱等动作必须符合真实方向、重力和物理顺序。\n- 相邻画面之间保持动作承接，手部位置、道具方向和水果状态连续，禁止人物、背景、光线、服装或水果不合理骤变。\n- 动作数量控制在 10 秒内可以自然完成的范围，不要堆叠过多动作。\n\n试吃限制：\n- 如果分镜涉及试吃，只能自然咬食可食用果肉区域。\n- 禁止咬食果蒂、果柄、果芯、果核、硬壳、厚果皮、白瓤、叶片或其他不可食用部位。\n- 咬口位置必须符合真实人类进食习惯，嘴部只接触果肉，不能穿透水果，不能一口咬掉不合理的大块。\n- 试吃前后水果状态连续，咬口由真实咬合动作形成，边缘自然，不能像刀切平面。\n\n人物与画面：\n- 优先只露手或局部身体；若分镜中有人物，保持同一人物、同一张脸、同一发型、同一服装，不得变脸、换人或多人突然出现。\n- 手部结构自然，五指数量正确，禁止多余手指、缺失手指、手部畸形、手指粘连或关节反折。\n- 场景严格遵循分镜，禁止无理由从果园跳到仓库、直播间、超市、厨房或其他环境。\n- 不生成背景音乐，只保留符合画面的自然环境声、操作声或分镜要求的口播。\n\n全局负面词：禁止白色方框，禁止白色色块，禁止马赛克，禁止审核遮挡，禁止九宫格，禁止拼图，禁止画中画，禁止分屏，禁止水果变形，禁止水果多头、多屁股、多蒂、双蒂、重复果柄，禁止果肉干巴不水润，禁止状态骤变，禁止穿模，禁止悬浮，禁止多余手指，禁止畸形手，禁止咬果蒂，禁止咬果柄，禁止咬果芯，禁止咬果核，禁止咬硬壳和厚果皮，禁止人物变脸，禁止场景跳变，禁止混入其他水果，禁止文字、价格、字幕、平台 UI、水印、品牌标识、贴纸、卡通感、CG 感、棚拍感和过度广告精修。`
+};
+
+const fruitMarketingTagsPrompt = {
+  id:'builtin-fruit-marketing-tags-research', title:'水果卖点人群活动标签调研', category:'文案',
+  tags:['卖点调研','适用人群','活动标签','文案素材','简短标签'], favorite:true, updated:Date.now()+11,
+  content:`请调研{{水果名称}}的真实产品特征和常见消费需求，为后续 AI 生成信息流带货文案整理标签素材。\n\n调研和输出要求：\n1. 不提及任何产地、地域、地名、产区或地域背书。\n2. 分别输出“产品核心卖点”“适用人群”“优惠活动”三组内容。\n3. 每组严格输出 6 个简短、独立、可以直接复制使用的标签。\n4. 每个标签只表达一个信息点，尽量控制在 2—8 个汉字，不写成长句，不添加解释。\n5. 产品核心卖点必须符合{{水果名称}}的真实品种特征，可从外观、口感、香气、果肉、汁水、成熟度、食用便利性、应季属性或消费场景中筛选，不得编造功效、认证、销量或无法证实的信息。\n6. 适用人群应围绕真实消费场景和口味偏好描述，例如喜欢脆甜口感、家庭分享、日常水果、上班族或爱吃水果的人群；禁止医疗、疾病治疗、减肥、孕妇专属、儿童必需等高风险功效暗示。\n7. 优惠活动只提供不涉及具体价格和赠品的活动表达，可从限时活动、应季尝鲜、产季活动、库存批次、会员活动、组合选择、下单权益或活动时效中选择合理方向。\n8. 优惠活动标签禁止出现任何具体或模糊价格，包括低价、特价、最低价、几元、到手价、立减金额；禁止出现买赠、赠品、加赠、送、免费送、试吃装等赠品信息。\n9. 文案符合广告法，禁止“最好、第一、顶级、极品、绝对、百分百、全网最低”等绝对化词语。\n10. 只输出最终标签，不展示调研过程，不写开场白、总结、序号说明或额外建议。\n\n严格按照以下格式输出：\n\n【产品核心卖点】\n标签｜标签｜标签｜标签｜标签｜标签\n\n【适用人群】\n标签｜标签｜标签｜标签｜标签｜标签\n\n【优惠活动】\n标签｜标签｜标签｜标签｜标签｜标签`
+};
+
+let prompts = loadPrompts();
+let activeCategory = '全部';
+let activeTag = '全部';
+let viewMode = 'prompts';
+let activeAssetType = '全部';
+
+const $ = (s) => document.querySelector(s);
+const grid = $('#promptGrid');
+const dialog = $('#promptDialog');
+const dataDialog = $('#dataDialog');
+const caseDialog = $('#caseDialog');
+const CASES_KEY = 'prompt-pocket-cases-v1';
+let cases = (()=>{ try{return JSON.parse(localStorage.getItem(CASES_KEY))||[]}catch{return[]} })();
+let pendingCaseImage = '';
+const ASSETS_KEY = 'prompt-pocket-assets-v1';
+let assets = (()=>{ try{return JSON.parse(localStorage.getItem(ASSETS_KEY))||[]}catch{return[]} })();
+let pendingAssetImage = '';
+
+function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); return saved; } catch { return [fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
+function savePrompts(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(prompts)); render(); }
+function esc(value=''){ return value.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+function showToast(text){ const el=$('#toast'); el.textContent=text; el.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>el.classList.remove('show'),1800); }
+
+function render(){
+  const search=$('#searchInput').value.trim().toLowerCase();
+  const categories=['全部',...new Set(prompts.map(p=>p.category))];
+  $('#categoryNav').innerHTML=categories.map(c=>`<button class="nav-item ${c===activeCategory?'active':''}" data-category="${esc(c)}"><span>${c==='全部'?'▦':'·'}　${esc(c)}</span><b>${c==='全部'?prompts.length:prompts.filter(p=>p.category===c).length}</b></button>`).join('');
+  const tags=['全部',...new Set(prompts.flatMap(p=>p.tags))].slice(0,8);
+  $('#filterChips').innerHTML=tags.map(t=>`<button class="chip ${t===activeTag?'active':''}" data-tag="${esc(t)}">${esc(t)}</button>`).join('');
+  let shown=prompts.filter(p=>(activeCategory==='全部'||p.category===activeCategory)&&(activeTag==='全部'||p.tags.includes(activeTag))&&(!search||[p.title,p.content,...p.tags].join(' ').toLowerCase().includes(search)));
+  const sort=$('#sortSelect').value;
+  shown.sort((a,b)=>sort==='title'?a.title.localeCompare(b.title,'zh-CN'):sort==='favorite'?(b.favorite-a.favorite)||(b.updated-a.updated):b.updated-a.updated);
+  grid.innerHTML=shown.map(p=>{const n=cases.filter(c=>c.promptId===p.id).length;return `<article class="prompt-card"><div class="card-top"><span class="category-pill">${esc(p.category)}</span><button class="favorite ${p.favorite?'on':''}" data-favorite="${p.id}" title="收藏">★</button></div><h3>${esc(p.title)}</h3><div class="tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div><p class="preview">${esc(p.content)}</p><div class="card-actions"><button class="copy-btn" data-copy="${p.id}">复制并使用</button><button class="cases-btn ${n?'has-cases':''}" data-cases="${p.id}">案例${n?` ${n}`:''}</button><button class="edit-btn" data-edit="${p.id}">编辑</button></div></article>`}).join('');
+  $('#emptyState').hidden=viewMode==='assets'||shown.length>0; $('#promptCount').textContent=prompts.length;
+  $('#assetNavCount').textContent=assets.length;
+  renderGlobalAssets();
+}
+
+function setView(mode){viewMode=mode;const assetMode=mode==='assets';$('.hero').hidden=assetMode;$('.controls').hidden=assetMode;grid.hidden=assetMode;$('#emptyState').hidden=assetMode||grid.children.length>0;$('#assetLibraryView').hidden=!assetMode;$('#assetLibraryNav').classList.toggle('active',assetMode);if(assetMode)renderGlobalAssets();}
+
+function openEditor(prompt){
+  $('#dialogTitle').textContent=prompt?'编辑提示词':'新建提示词'; $('#promptId').value=prompt?.id||''; $('#titleField').value=prompt?.title||''; $('#categoryField').value=prompt?.category||'生图'; $('#tagsField').value=prompt?.tags.join(', ')||''; $('#contentField').value=prompt?.content||''; $('#deletePromptBtn').hidden=!prompt; dialog.showModal();
+}
+
+async function copyPrompt(prompt){
+  let text=prompt.content; const variables=[...new Set([...text.matchAll(/{{(.*?)}}/g)].map(m=>m[1]))];
+  for(const name of variables){ const value=window.prompt(`请输入${name}：`, name==='水果名称'?'绿心猕猴桃':''); if(value===null)return; text=text.replaceAll(`{{${name}}}`,value.trim()||`{{${name}}}`); }
+  try { await navigator.clipboard.writeText(text); showToast('已复制，可以去创作了'); } catch { const area=document.createElement('textarea'); area.value=text; document.body.append(area); area.select(); document.execCommand('copy'); area.remove(); showToast('已复制，可以去创作了'); }
+}
+
+function saveCases(){
+  try{localStorage.setItem(CASES_KEY,JSON.stringify(cases));render();}
+  catch{alert('案例图片占用空间较大，浏览器存储已满。请删除部分案例后再试。');}
+}
+function resetCaseForm(){ $('#caseForm').reset(); pendingCaseImage=''; $('#caseImagePreview').hidden=true; $('#caseImagePreview').removeAttribute('src'); $('#pasteHint').hidden=false; }
+function renderCases(promptId){
+  const list=cases.filter(c=>c.promptId===promptId).sort((a,b)=>b.created-a.created);
+  $('#caseGallery').innerHTML=list.length?list.map(c=>`<article class="case-card" data-view-case="${c.id}">${c.image?`<img src="${c.image}" alt="${esc(c.name)}">`:`<div class="case-card-text">${esc(c.text||'暂无内容')}</div>`}<button class="case-delete" data-delete-case="${c.id}" title="删除">×</button><div class="case-meta"><strong>${esc(c.name)}</strong><span>${esc(c.tool||'未记录工具')}</span></div></article>`).join(''):`<div class="case-empty">还没有案例。把刚生成的图片或文案复制过来吧。</div>`;
+}
+function openCases(promptId){
+  const p=prompts.find(x=>x.id===promptId); $('#casePromptId').value=promptId; $('#caseDialogTitle').textContent=`${p.title} · 效果案例`; resetCaseForm(); $('#casePromptId').value=promptId; renderCases(promptId); caseDialog.showModal();
+}
+function compressImage(file){
+  return new Promise((resolve,reject)=>{const img=new Image();const url=URL.createObjectURL(file);img.onload=()=>{let {width,height}=img;const max=1400;if(Math.max(width,height)>max){const scale=max/Math.max(width,height);width*=scale;height*=scale}const canvas=document.createElement('canvas');canvas.width=Math.round(width);canvas.height=Math.round(height);canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);URL.revokeObjectURL(url);resolve(canvas.toDataURL('image/jpeg',.78))};img.onerror=reject;img.src=url;});
+}
+async function acceptImage(file){if(!file?.type.startsWith('image/'))return;pendingCaseImage=await compressImage(file);$('#caseImagePreview').src=pendingCaseImage;$('#caseImagePreview').hidden=false;$('#pasteHint').hidden=true;}
+function saveAssets(){try{localStorage.setItem(ASSETS_KEY,JSON.stringify(assets));render()}catch{alert('参考图占用空间较大，浏览器存储已满。请先导出备份并删除部分素材。')}}
+function resetAssetForm(){const id=$('#assetPromptId').value;$('#assetForm').reset();$('#assetPromptId').value=id;pendingAssetImage='';$('#assetImagePreview').hidden=true;$('#assetImagePreview').removeAttribute('src');$('#assetPasteHint').hidden=false;}
+function renderAssets(promptId){const list=assets.filter(a=>a.promptId===promptId).sort((a,b)=>b.created-a.created);$('#assetGallery').innerHTML=list.length?list.map(a=>`<article class="case-card"><img src="${a.image}" alt="${esc(a.name)}"><button class="case-delete" data-delete-asset="${a.id}" title="删除">×</button><div class="case-meta"><strong>${esc(a.name)}</strong><span>${esc(a.type)}</span></div><div class="asset-actions"><button data-copy-asset="${a.id}">复制图片</button><button data-download-asset="${a.id}">下载</button></div></article>`).join(''):`<div class="case-empty">还没有参考资产。复制人物、场景或水果图片后直接粘贴即可。</div>`;}
+function openAssets(promptId){const p=prompts.find(x=>x.id===promptId);$('#assetPromptId').value=promptId;$('#assetDialogTitle').textContent=`${p.title} · 参考资产`;resetAssetForm();renderAssets(promptId);$('#assetDialog').showModal();}
+function openGlobalAssetEditor(){const gallery=$('#assetGallery');gallery.hidden=true;$('#assetPromptId').value='';$('#assetDialogTitle').textContent='添加到公共资产库';resetAssetForm();$('#assetDialog').showModal();}
+function renderGlobalAssets(){
+  const search=$('#searchInput').value.trim().toLowerCase();const types=['全部',...new Set(assets.map(a=>a.type))];
+  $('#assetFilterChips').innerHTML=types.map(t=>`<button class="chip ${t===activeAssetType?'active':''}" data-asset-type="${esc(t)}">${esc(t)}</button>`).join('');
+  const list=assets.filter(a=>(activeAssetType==='全部'||a.type===activeAssetType)&&(!search||[a.name,a.type,a.note].join(' ').toLowerCase().includes(search))).sort((a,b)=>b.created-a.created);
+  $('#globalAssetGallery').innerHTML=list.length?list.map(a=>`<article class="case-card"><img src="${a.image}" alt="${esc(a.name)}"><button class="case-delete" data-delete-asset="${a.id}" title="删除">×</button><div class="case-meta"><strong>${esc(a.name)}</strong><span>${esc(a.type)}</span></div>${a.note?`<div class="asset-note">${esc(a.note)}</div>`:''}<div class="asset-actions"><button data-copy-asset="${a.id}">复制图片</button><button data-download-asset="${a.id}">下载</button></div></article>`).join(''):`<div class="asset-empty">资产库还是空的。添加人物、场景或水果参考图吧。</div>`;
+}
+async function acceptAssetImage(file){if(!file?.type.startsWith('image/'))return;pendingAssetImage=await compressImage(file);$('#assetImagePreview').src=pendingAssetImage;$('#assetImagePreview').hidden=false;$('#assetPasteHint').hidden=true;}
+function downloadAsset(a){const link=document.createElement('a');link.href=a.image;link.download=`${a.name||'参考资产'}.jpg`;link.click();}
+async function copyAsset(a){try{const blob=await(await fetch(a.image)).blob();await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);showToast('参考图已复制')}catch{downloadAsset(a);showToast('浏览器不允许复制，已改为下载')}}
+
+document.addEventListener('click',e=>{
+  const category=e.target.closest('[data-category]'); if(category){activeCategory=category.dataset.category;setView('prompts');render();}
+  const tag=e.target.closest('[data-tag]'); if(tag){activeTag=tag.dataset.tag;render();}
+  const assetType=e.target.closest('[data-asset-type]');if(assetType){activeAssetType=assetType.dataset.assetType;renderGlobalAssets();}
+  const fav=e.target.closest('[data-favorite]'); if(fav){const p=prompts.find(x=>x.id===fav.dataset.favorite);p.favorite=!p.favorite;p.updated=Date.now();savePrompts();}
+  const edit=e.target.closest('[data-edit]'); if(edit)openEditor(prompts.find(x=>x.id===edit.dataset.edit));
+  const copy=e.target.closest('[data-copy]'); if(copy)copyPrompt(prompts.find(x=>x.id===copy.dataset.copy));
+  const caseBtn=e.target.closest('[data-cases]'); if(caseBtn)openCases(caseBtn.dataset.cases);
+  const delAsset=e.target.closest('[data-delete-asset]'); if(delAsset){if(confirm('确定删除这个参考资产吗？')){assets=assets.filter(a=>a.id!==delAsset.dataset.deleteAsset);saveAssets();renderAssets($('#assetPromptId').value);}}
+  const copyAssetBtn=e.target.closest('[data-copy-asset]'); if(copyAssetBtn)copyAsset(assets.find(a=>a.id===copyAssetBtn.dataset.copyAsset));
+  const downloadAssetBtn=e.target.closest('[data-download-asset]'); if(downloadAssetBtn)downloadAsset(assets.find(a=>a.id===downloadAssetBtn.dataset.downloadAsset));
+  const delCase=e.target.closest('[data-delete-case]'); if(delCase){e.stopPropagation();if(confirm('确定删除这个效果案例吗？')){cases=cases.filter(c=>c.id!==delCase.dataset.deleteCase);saveCases();renderCases($('#casePromptId').value);}}
+  const view=e.target.closest('[data-view-case]'); if(view&&!e.target.closest('[data-delete-case]')){const c=cases.find(x=>x.id===view.dataset.viewCase);$('#caseViewContent').innerHTML=`${c.image?`<img src="${c.image}" alt="${esc(c.name)}">`:`<pre>${esc(c.text)}</pre>`}<div class="view-meta"><h3>${esc(c.name)}</h3><span>${esc(c.tool||'未记录工具')}</span>${c.note?`<p>${esc(c.note)}</p>`:''}</div>`;$('#caseViewDialog').showModal();}
+  if(e.target.closest('[data-close]'))e.target.closest('dialog').close();
+});
+$('#searchInput').addEventListener('input',render); $('#sortSelect').addEventListener('change',render);
+$('#newPromptBtn').addEventListener('click',()=>openEditor()); $('#importExportBtn').addEventListener('click',()=>dataDialog.showModal());
+$('#assetLibraryNav').addEventListener('click',()=>setView('assets'));
+$('#addGlobalAssetBtn').addEventListener('click',openGlobalAssetEditor);
+$('#chooseImageBtn').addEventListener('click',()=>$('#caseImageInput').click());
+$('#caseImageInput').addEventListener('change',e=>acceptImage(e.target.files[0]));
+$('#pasteZone').addEventListener('paste',e=>{const image=[...e.clipboardData.items].find(i=>i.type.startsWith('image/'));if(image){e.preventDefault();acceptImage(image.getAsFile());}});
+$('#cancelCaseBtn').addEventListener('click',resetCaseForm);
+$('#caseForm').addEventListener('submit',e=>{e.preventDefault();const text=$('#caseText').value.trim();if(!pendingCaseImage&&!text){alert('请先粘贴一张图片或一段文案。');return}cases.unshift({id:crypto.randomUUID(),promptId:$('#casePromptId').value,name:$('#caseName').value.trim(),tool:$('#caseTool').value.trim(),image:pendingCaseImage,text,note:$('#caseNote').value.trim(),created:Date.now()});saveCases();renderCases($('#casePromptId').value);resetCaseForm();$('#casePromptId').value=cases[0].promptId;showToast('效果案例已保存');});
+$('#chooseAssetBtn').addEventListener('click',()=>$('#assetImageInput').click());
+$('#assetImageInput').addEventListener('change',e=>acceptAssetImage(e.target.files[0]));
+$('#assetPasteZone').addEventListener('paste',e=>{const image=[...e.clipboardData.items].find(i=>i.type.startsWith('image/'));if(image){e.preventDefault();acceptAssetImage(image.getAsFile());}});
+$('#cancelAssetBtn').addEventListener('click',resetAssetForm);
+$('#assetForm').addEventListener('submit',e=>{e.preventDefault();if(!pendingAssetImage){alert('请先粘贴或选择一张参考图。');return}assets.unshift({id:crypto.randomUUID(),promptId:'',name:$('#assetName').value.trim(),type:$('#assetType').value,note:$('#assetNote').value.trim(),image:pendingAssetImage,created:Date.now()});saveAssets();resetAssetForm();$('#assetDialog').close();renderGlobalAssets();showToast('参考资产已保存到公共资产库');});
+$('#promptForm').addEventListener('submit',e=>{e.preventDefault();const id=$('#promptId').value;const item={id:id||crypto.randomUUID(),title:$('#titleField').value.trim(),category:$('#categoryField').value,tags:$('#tagsField').value.split(/[,，]/).map(x=>x.trim()).filter(Boolean),content:$('#contentField').value.trim(),favorite:prompts.find(p=>p.id===id)?.favorite||false,updated:Date.now()};prompts=id?prompts.map(p=>p.id===id?item:p):[item,...prompts];savePrompts();dialog.close();showToast(id?'修改已保存':'提示词已添加');});
+$('#deletePromptBtn').addEventListener('click',()=>{const id=$('#promptId').value;if(id&&confirm('确定删除这条提示词吗？')){prompts=prompts.filter(p=>p.id!==id);savePrompts();dialog.close();showToast('已删除');}});
+$('#exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({version:3,prompts,cases,assets},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`我的提示词案例与资产备份-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href);showToast('提示词、案例和资产已导出');});
+$('#importInput').addEventListener('change',async e=>{try{const data=JSON.parse(await e.target.files[0].text());if(Array.isArray(data)){prompts=data}else if(Array.isArray(data.prompts)){prompts=data.prompts;cases=Array.isArray(data.cases)?data.cases:[];assets=Array.isArray(data.assets)?data.assets:[];saveCases();saveAssets()}else throw Error();savePrompts();dataDialog.close();showToast('提示词、案例和资产已导入');}catch{alert('这不是有效的提示词备份文件。');}e.target.value='';});
+$('#resetBtn').addEventListener('click',()=>{if(confirm('恢复初始内容会替换当前所有提示词，确定继续吗？')){prompts=structuredClone(starterPrompts);savePrompts();dataDialog.close();showToast('已恢复初始内容');}});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#searchInput').focus();}});
+render();
