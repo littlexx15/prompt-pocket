@@ -1,0 +1,16 @@
+{
+  "name": "prompt-pocket",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prepare-site": "node scripts/prepare-public.mjs",
+    "dev": "npm run prepare-site && next dev",
+    "build": "npm run prepare-site && next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "15.5.9",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  }
+}
