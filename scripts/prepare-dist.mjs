@@ -45,9 +45,7 @@ export default {
     return new Response(body, {
       headers: {
         "content-type": contentTypes[extension] || "text/plain; charset=utf-8",
-        "cache-control": path.endsWith(".html")
-          ? "no-cache"
-          : "public, max-age=3600"
+        "cache-control": "no-store, no-cache, must-revalidate, max-age=0"
       }
     });
   }
