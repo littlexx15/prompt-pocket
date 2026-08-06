@@ -5,7 +5,7 @@
   "scripts": {
     "prepare-site": "node scripts/prepare-public.mjs",
     "dev": "npm run prepare-site && next dev",
-    "build": "npm run prepare-site && next build",
+    "build": "npm run prepare-site && next build && node scripts/prepare-dist.mjs",
     "start": "next start"
   },
   "dependencies": {
