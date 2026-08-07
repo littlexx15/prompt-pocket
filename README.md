@@ -1,5 +1,7 @@
 # Prompt Pocket
 
+![Prompt Pocket 图标](assets/prompt-pocket-icon.svg)
+
 一个完全在本地运行的个人提示词仓库。
 
 ## 使用方法
@@ -15,3 +17,11 @@
 - 可通过“导入 / 导出”同时备份提示词和案例
 
 > 请定期导出备份。清除浏览器网站数据会同时清除本地保存的提示词。
+
+## 视觉参考示例
+
+以下图片作为界面设计与案例展示的视觉参考：
+
+![全年水果雷达首页视觉参考](docs/examples/year-round-fruit-finder-overview.png)
+
+![全年水果雷达卡片视觉参考](docs/examples/year-round-fruit-finder-cards.png)
