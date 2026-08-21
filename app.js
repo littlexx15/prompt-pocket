@@ -174,6 +174,114 @@ const fruitTasteTvc15sPrompt = {
 九宫格，十二宫格，拼图，分屏，画中画，字幕遮挡主体，字幕进入人物嘴部或手果动作区域，平台UI遮挡字幕，水果品种漂移，水果比例错误，尺寸忽大忽小，水果变形，多头，多屁股，多蒂，双蒂，果瓣增生，籽核数量跳变，错误果肉颜色，错误内部结构，水果状态骤变，已切水果自动复原，果肉干巴，果肉塑料感，假爆汁，果汁凭空喷射，果汁逆重力，咬果蒂，咬果柄，咬果芯，咬果核，咬厚皮，咬白瓤，多余手指，畸形手，手果穿模，刀具穿模，危险用刀，人物变脸，换人，换服装，场景跳变，光线跳变，无关水果，无关人物，乱码文字，价格，水印，品牌标识，卡通感，CG感，棚拍感，过度广告精修。`
 };
 
+const fruitHostSales45sPrompt = {
+  id:'builtin-fruit-host-sales-45s', title:'人物口播45秒水果带货脚本（3×15秒）', category:'文案',
+  tags:['人物口播','45秒','3段15秒','带货脚本','卖点','购买理由'], favorite:true, updated:Date.now()+17,
+  content:`你是抖音千川生鲜带货口播策划和水果短视频导演。请围绕{{水果名称}}，设计一条由同一位真人主播出镜的45秒竖屏带货口播视频，并严格拆成3条可以分别生成、分别剪辑的15秒视频。
+
+【任务目标】
+整条45秒视频依次回答三个问题：
+1. 为什么值得吃{{水果名称}}？
+2. 为什么现在值得考虑购买？
+3. {{水果名称}}有什么真实卖点，消费者能得到什么具体食用利益？
+
+这里的“好处”优先写消费者可以直接感受到的利益，例如解馋、清爽、方便分享、果肉足、食用体验好、适合家庭场景等；不要擅自写治疗、减肥、美白、降血糖、增强免疫力等医疗或保健功效。
+
+【事实与广告合规】
+- 先核对{{水果名称}}的真实品种特征、典型口感、果肉结构、果皮或果瓣特点、常见食用方式和合理消费场景。
+- 只采用可靠且符合该品种的卖点，不得把其他水果的颜色、结构、口感和吃法套进来。
+- “为什么现在买”只能使用可以成立的理由，例如用户已提供的应季信息、真实活动信息、当前食用场景或尝鲜需求。若时令、库存、优惠、发货、产地或价格没有可靠信息，不得虚构“最后一批、马上下市、现摘现发、卖完没有、全年最低、限量”等紧迫事实。
+- 不编造糖度、营养含量、功效、认证、销量、库存、原价、折扣、赠品或商家亏损。无法确认的信息写成“待用户补充”，不要放进口播。
+- 语言真诚、有感染力、接地气、有带货节奏，但符合广告法，不使用“最好、第一、顶级、百分百”等绝对化表达。
+
+【人物设定】
+- 先设计一位适合{{水果名称}}的真人主播，包括年龄感、气质、服装、说话方式、站姿和生活化场景；人物要可信、亲切，不能像背广告。
+- 3段视频必须是同一位主播：同一张脸、同一发型、同一服装、同一妆容、同一声音和说话节奏。
+- 全片使用同一主场景、相同时间与光线方向；水果、盘子、果皮、果瓣或果块的位置变化必须符合动作顺序。
+- 如果用户上传人物图、场景图或水果图，分别作为人物、环境和产品外观的唯一参考，不互相覆盖。
+
+【三段内容分工】
+
+【视频1｜0—15秒｜为什么值得吃】
+- 开头3秒必须有一句自然、抓人的问题型、体验型或反常识钩子。
+- 只围绕一个最有辨识度、最容易被画面证明的核心食用体验展开。
+- 配一个证明动作，例如展示真实果肉、沿自然纹理掰开一瓣、轻撕果膜、举到镜头前或自然试吃；一镜只做一个主要动作。
+- 不提前讲活动和催单，不把全部卖点塞进第一段。
+
+【视频2｜15—30秒｜为什么现在买】
+- 用真实、温和的时机理由承接第一段，例如当下尝鲜、家庭分享或用户已经提供的应季信息。
+- 只强化一个“现在考虑”的理由，不制造虚假稀缺和价格恐慌。
+- 画面用与时机理由匹配的动作证明，例如拿出一盘可分享果肉、展示一颗果能分出的真实份量或准备家庭食用场景。
+- 本段作为独立生成视频，提示词必须完整重述人物、水果、场景和连续性，不能只写“接上一段”。
+
+【视频3｜30—45秒｜卖点、利益与行动引导】
+- 选择1至2个彼此关联的真实卖点，转化为消费者能理解的具体利益，不重复前两段原句。
+- 用已经建立的水果状态完成一个结果展示或自然试吃定格。
+- 结尾给出温和明确的行动引导，例如“想尝这口的，可以点进来看看”，不得虚构优惠、库存或倒计时。
+- 本段同样必须可以独立生成，不依赖“保持上一段一致”等上下文省略。
+
+【口播节奏】
+- 每段口播控制在约45至60个汉字，以正常中文语速在15秒内自然说完；宁可简短，也不要抢字、吞字或超时。
+- 3段口播合计组成一条逻辑完整的45秒文案，但每段单独播放也能听懂。
+- 句子口语化、短句化，避免堆砌形容词；三段的开头、句式和情绪推进要明显不同。
+- 口型必须与中文口播逐字同步，人物在咀嚼时不能同时说长句；试吃声和口播错开。
+
+【画面与安全限制】
+- 竖屏9:16，真实原生手机拍摄质感，自然光，生活化，不摆拍，不过度商业精修。
+- 每段安排2至4个镜头，每镜只有一个主要动作，并写明起始状态、动作过程和结束状态；水果从完整、剥开、分瓣到试吃的变化必须可见且合理。
+- 试吃只咬{{水果名称}}真实可食用的果肉，禁止咬果蒂、果柄、果芯、果核、硬壳、厚皮或不可食用白瓤。
+- 果肉保持符合品种的真实水润度；如果表现汁水，只在真实受力或咬口位置自然出现，禁止凭空喷汁和夸张爆浆。
+- 字幕位于底部安全区，不遮挡水果、手部动作、人物嘴部和关键道具，也不进入平台UI区域。
+
+【输出格式】
+严格按以下结构输出：
+
+【人物设定】
+人物形象：
+服装与气质：
+统一场景：
+说话风格：
+
+【45秒总策略】
+核心受众：
+总钩子：
+三个分段的逻辑：
+已核实卖点：
+待用户补充信息：
+
+【视频1｜15秒｜为什么值得吃】
+本段核心：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【视频2｜15秒｜为什么现在买】
+本段核心：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【视频3｜15秒｜卖点、利益与行动引导】
+本段核心：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【45秒连续剪辑说明】
+说明三段拼接时的人物、场景、水果状态、道具、光线、声音和字幕如何自然衔接；不得使用会让独立生成提示词失去信息的“同上”或“保持一致”表达。
+
+统一负面限制：人物变脸，换人，换发型，换服装，声音变化，多人抢镜，口型不同步，咀嚼时强行说话，水果品种漂移，颜色错误，内部结构错误，水果变形，多头，多屁股，多蒂，双蒂，水果状态骤变，已剥水果自动复原，果瓣或果块数量跳变，咬果蒂，咬果柄，咬果芯，咬果核，咬硬壳，咬厚皮，咬白瓤，果肉干巴，假爆汁，果汁凭空喷射，多余手指，畸形手，手果穿模，字幕遮挡主体，字幕进入平台UI区，虚假功效，虚假时令，虚假库存，虚假优惠，绝对化广告词，无关水果，无关人物，乱码文字，价格，水印，品牌标识，卡通感，CG感，棚拍感，过度广告精修。`
+};
+
 let prompts = loadPrompts();
 let activeCategory = '全部';
 let activeTag = '全部';
@@ -192,7 +300,7 @@ const ASSETS_KEY = 'prompt-pocket-assets-v1';
 let assets = (()=>{ try{return JSON.parse(localStorage.getItem(ASSETS_KEY))||[]}catch{return[]} })();
 let pendingAssetImage = '';
 
-function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===replaceGirlAndEnvironmentVideoPromptV2.id?replaceGirlAndEnvironmentVideoPromptV2:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt,fruitTasteTvc15sPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); return saved; } catch { return [fruitTasteTvc15sPrompt,fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
+function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===replaceGirlAndEnvironmentVideoPromptV2.id?replaceGirlAndEnvironmentVideoPromptV2:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt,fruitTasteTvc15sPrompt,fruitHostSales45sPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); return saved; } catch { return [fruitHostSales45sPrompt,fruitTasteTvc15sPrompt,fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
 function savePrompts(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(prompts)); render(); }
 function esc(value=''){ return value.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 function showToast(text){ const el=$('#toast'); el.textContent=text; el.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>el.classList.remove('show'),1800); }
