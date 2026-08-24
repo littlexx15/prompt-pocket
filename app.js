@@ -288,6 +288,108 @@ const realFruitImageResearchPrompt = {
   content:`帮我找一些{{水果名称}}的图片，凸显它的卖点、质感以及结构，包括：完整外形、被剥皮后的无皮状态、被切开的半果展示、纯果肉的果肉质感展示、被咬一口后的截面展示。不要AI图。`
 };
 
+const fruitHostSales30sPrompt = {
+  id:'builtin-fruit-host-sales-30s', title:'30秒真人主播水果带货脚本（2×15秒）', category:'视频',
+  tags:['真人口播','30秒','2段15秒','千川','带货视频','独立生成'], favorite:true, updated:Date.now()+21,
+  content:`你是抖音千川生鲜带货口播策划和水果短视频导演。请围绕{{水果名称}}，设计一条30秒真人主播竖屏带货视频，并严格拆成2条可独立生成、独立剪辑的15秒视频。
+
+【先做事实核对】
+先核对{{水果名称}}真实的外观、果肉结构、典型口感、果皮/果瓣/果核特点、常见吃法和消费场景。只写真实可靠卖点，不得套用其他水果特征。
+
+不得编造糖度、功效、产地、时令、库存、销量、价格、优惠、赠品、现摘现发等信息。无法确认的内容写入“待用户补充”，不要放进口播。
+
+消费者利益优先写真实可感知体验，例如：解馋、清爽、果肉足、吃着方便、适合分享、适合家庭/办公室/饭后等。禁止医疗保健功效及绝对化广告词。
+
+【人物与场景】
+先设计一位适合{{水果名称}}的真人主播，明确年龄感、发型、服装、气质、说话方式和生活化场景。
+
+两条视频必须为同一主播：
+同一张脸、发型、服装、妆容、声音和语速。
+
+全片使用同一场景、同一光线方向、同一桌面和道具。水果从完整、切开/剥开、展示到试吃的状态变化必须合理连续。
+
+如用户上传人物图、场景图、水果图，分别作为人物、环境、产品外观的唯一参考。
+
+【视频1｜0—15秒｜为什么值得吃】
+目标：先让观众产生食欲。
+
+要求：
+
+- 前3秒必须有自然抓人的体验型、疑问型或反差型钩子。
+- 只讲一个最有辨识度、最容易用画面证明的核心体验。
+- 配一个真实证明动作，例如切开、剥开、分瓣、展示果肉、举近镜头或自然试吃。
+- 不讲优惠、库存和催单。
+- 口播约45—55个汉字。
+
+【视频2｜15—30秒｜卖点+购买理由+转化】
+目标：让观众知道买回去具体能得到什么体验。
+
+要求：
+
+- 补充1—2个真实且相关的卖点。
+- 将卖点转换成消费者利益，例如“果肉厚→吃起来更有满足感”“好剥→吃起来省事”。
+- 给出一个真实温和的“现在可以考虑”的理由，例如尝鲜、家庭分享、下午茶、饭后等；只有确认时令或活动后才能使用应季、优惠等理由。
+- 结尾使用温和行动引导，例如：“喜欢这种口感的，可以点进来看看。”
+- 口播约45—55个汉字。
+
+【画面要求】
+
+- 9:16竖屏，真实手机实拍质感，自然光，生活化，不过度商业精修。
+- 每条15秒安排3个镜头：0—3秒、3—8秒、8—15秒。
+- 每镜只做一个主要动作。
+- 每镜写清楚：起始状态→动作过程→结束状态。
+- 中文口型逐字同步。
+- 咀嚼时不说长句。
+- 只吃水果真实可食用部分。
+- 汁水只能在切口、受力处或咬口自然出现，禁止夸张爆浆。
+- AI画面中不生成字幕，字幕后期添加。
+
+【输出格式】
+
+【人物设定】
+人物形象：
+服装与气质：
+统一场景：
+说话风格：
+
+【30秒总策略】
+核心受众：
+总钩子：
+视频1逻辑：
+视频2逻辑：
+已核实卖点：
+待用户补充信息：
+
+【视频1｜15秒｜为什么值得吃】
+本段核心：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【视频2｜15秒｜卖点、购买理由与行动引导】
+本段核心：
+真实卖点：
+消费者利益：
+为什么现在可以考虑：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【30秒连续剪辑说明】
+说明两段拼接时的人物、场景、光线、水果状态、道具、声音和字幕如何自然衔接。
+
+独立AI提示词必须完整写明人物、服装、场景、水果真实外观、起始状态、动作、口播和结束状态，不能写“接上一段”“同上”“保持一致”。
+
+【统一负面限制】
+人物变脸，换人，换发型，换服装，声音变化，口型不同步，咀嚼时说长句，多余手指，畸形手，手果穿模，水果品种漂移，颜色错误，内部结构错误，多蒂，双蒂，水果数量跳变，水果凭空消失，已切水果自动复原，错误剥皮或分瓣，咬果蒂，咬果柄，咬果芯，咬果核，咬厚皮，果肉干巴，假爆汁，果汁凭空喷射，字幕遮挡主体，乱码，价格，水印，品牌标识，虚假功效，虚假时令，虚假库存，虚假优惠，绝对化广告词，无关水果，卡通感，CG感，棚拍感，过度商业精修。`
+};
+
 let prompts = loadPrompts();
 let activeCategory = '全部';
 let activeTag = '全部';
@@ -306,7 +408,7 @@ const ASSETS_KEY = 'prompt-pocket-assets-v1';
 let assets = (()=>{ try{return JSON.parse(localStorage.getItem(ASSETS_KEY))||[]}catch{return[]} })();
 let pendingAssetImage = '';
 
-function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===replaceGirlAndEnvironmentVideoPromptV2.id?replaceGirlAndEnvironmentVideoPromptV2:p.id===realFruitImageResearchPrompt.id?realFruitImageResearchPrompt:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt,fruitTasteTvc15sPrompt,fruitHostSales45sPrompt,realFruitImageResearchPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); return saved; } catch { return [realFruitImageResearchPrompt,fruitHostSales45sPrompt,fruitTasteTvc15sPrompt,fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
+function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===replaceGirlAndEnvironmentVideoPromptV2.id?replaceGirlAndEnvironmentVideoPromptV2:p.id===realFruitImageResearchPrompt.id?realFruitImageResearchPrompt:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt,fruitTasteTvc15sPrompt,fruitHostSales45sPrompt,realFruitImageResearchPrompt,fruitHostSales30sPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); return saved; } catch { return [fruitHostSales30sPrompt,realFruitImageResearchPrompt,fruitHostSales45sPrompt,fruitTasteTvc15sPrompt,fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
 function savePrompts(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(prompts)); render(); }
 function esc(value=''){ return value.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 function showToast(text){ const el=$('#toast'); el.textContent=text; el.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>el.classList.remove('show'),1800); }
