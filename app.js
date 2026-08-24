@@ -284,44 +284,8 @@ const fruitHostSales45sPrompt = {
 
 const realFruitImageResearchPrompt = {
   id:'builtin-real-fruit-image-research', title:'水果五种状态真实图片检索', category:'其他',
-  tags:['图片检索','真实照片','非AI图','五种状态','果肉质感','结构参考'], favorite:true, updated:Date.now()+19,
-  content:`帮我在互联网上寻找一些{{水果名称}}的真实摄影图片，重点凸显它的卖点、真实质感和内部结构。不要生成图片，只搜索真实相机拍摄的照片；禁止AI生成图、AI重绘图、3D渲染、插画、合成概念图和来源不明的搬运图。
-
-请先核对{{水果名称}}的规范名称、常见别名、英文名和学名，排除名字相近但不是同一品种的水果，不能因为外观或果肉颜色相似就混用其他品种。
-
-需要分别寻找以下5种状态，每种状态尽量提供2至4张候选照片：
-
-1. 完整外形：完整未切、未剥皮的{{水果名称}}，自然光实拍，能看清真实果形、表皮颜色、纹理、刺座或果蒂关系以及自然瑕疵。
-
-2. 完全剥皮、无皮状态：外皮已经完整去除，只保留可食用果肉主体，能看清去皮后的真实轮廓、果肉颜色、籽粒分布和表面质感；禁止出现残留错乱果皮、悬浮果皮或错误剥皮结构。
-
-3. 切开半果展示：一颗{{水果名称}}被真实切成两半或展示其中半颗，切面正对镜头，能看清果皮厚度、果肉层次、中心结构和籽核分布；两半结构必须对应，不能出现AI常见的重复果蒂、错误内芯或切面与外皮不连续。
-
-4. 纯果肉质感展示：去除外皮后的纯果肉或真实果肉块近景、微距，突出水润度、纤维、汁胞、颗粒和籽粒等符合{{水果名称}}的真实质感；不要过度磨皮、过饱和、塑料高光或夸张假爆汁。
-
-5. 被咬一口后的咬口截面展示：人物手持或自然摆放的{{水果名称}}已经被真实咬掉一口，咬口位于可食用果肉，边缘有自然牙齿咬合痕迹，能看清新鲜果肉截面和真实汁水感；禁止咬果蒂、果柄、果核、硬壳、厚皮或其他不可食用部分，禁止用平整刀切面冒充咬口。
-
-真实照片核验要求：
-- 优先选择Wikimedia Commons、政府农业机构、大学、植物园、可靠品种数据库、摄影师主页、Unsplash、Pexels或正规图库中的原始照片。
-- 优先保留有摄影师／机构署名、原始发布页面、拍摄信息、相机EXIF、原始分辨率或明确许可的图片。
-- 不能仅凭“看起来像实拍”判断；如果无法确认真实性，标记“真实性待核验”，不要放入首选图片。
-- 排除结构重复、籽粒异常规律、果蒂畸形、切面不连续、手指异常、塑料光泽等疑似AI图片。
-
-每张结果必须提供：
-【图片状态类型】
-图片预览：
-原始来源页面：
-原图或下载页面：
-作者／机构：
-真实性依据：
-画面内容：
-可证明的视觉卖点：
-分辨率与画面方向：
-版权或商业使用提醒：
-
-最后从全部结果中选出最适合的5至10张首选图片，确保五种状态均有覆盖，并说明每张图片适合用作完整外观、去皮结构、半果切面、果肉质感或真实咬口中的哪一种参考。
-
-不要编造图片链接、作者、EXIF、分辨率或许可。若某一种状态找不到可靠的真实照片，直接说明缺口，不要用AI图或错误品种凑数。许可不清楚的图片只可用于观察参考，不建议直接商用。`
+  tags:['图片检索','真实照片','非AI图','五种状态','果肉质感'], favorite:true, updated:Date.now()+20,
+  content:`帮我找一些{{水果名称}}的图片，凸显它的卖点、质感以及结构，包括：完整外形、被剥皮后的无皮状态、被切开的半果展示、纯果肉的果肉质感展示、被咬一口后的截面展示。不要AI图。`
 };
 
 let prompts = loadPrompts();
@@ -342,7 +306,7 @@ const ASSETS_KEY = 'prompt-pocket-assets-v1';
 let assets = (()=>{ try{return JSON.parse(localStorage.getItem(ASSETS_KEY))||[]}catch{return[]} })();
 let pendingAssetImage = '';
 
-function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===replaceGirlAndEnvironmentVideoPromptV2.id?replaceGirlAndEnvironmentVideoPromptV2:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt,fruitTasteTvc15sPrompt,fruitHostSales45sPrompt,realFruitImageResearchPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); return saved; } catch { return [realFruitImageResearchPrompt,fruitHostSales45sPrompt,fruitTasteTvc15sPrompt,fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
+function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===replaceGirlAndEnvironmentVideoPromptV2.id?replaceGirlAndEnvironmentVideoPromptV2:p.id===realFruitImageResearchPrompt.id?realFruitImageResearchPrompt:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt,fruitTasteTvc15sPrompt,fruitHostSales45sPrompt,realFruitImageResearchPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); return saved; } catch { return [realFruitImageResearchPrompt,fruitHostSales45sPrompt,fruitTasteTvc15sPrompt,fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
 function savePrompts(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(prompts)); render(); }
 function esc(value=''){ return value.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 function showToast(text){ const el=$('#toast'); el.textContent=text; el.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>el.classList.remove('show'),1800); }
