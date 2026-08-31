@@ -282,10 +282,12 @@ const fruitHostSales45sPrompt = {
 统一负面限制：人物变脸，换人，换发型，换服装，声音变化，多人抢镜，口型不同步，咀嚼时强行说话，水果品种漂移，颜色错误，内部结构错误，水果变形，多头，多屁股，多蒂，双蒂，水果状态骤变，已剥水果自动复原，果瓣或果块数量跳变，咬果蒂，咬果柄，咬果芯，咬果核，咬硬壳，咬厚皮，咬白瓤，果肉干巴，假爆汁，果汁凭空喷射，多余手指，畸形手，手果穿模，字幕遮挡主体，字幕进入平台UI区，虚假功效，虚假时令，虚假库存，虚假优惠，绝对化广告词，无关水果，无关人物，乱码文字，价格，水印，品牌标识，卡通感，CG感，棚拍感，过度广告精修。`
 };
 
+const legacyRealFruitImagePromptContent = `帮我找一些{{水果名称}}的图片，凸显它的卖点、质感以及结构，包括：完整外形、被剥皮后的无皮状态、被切开的半果展示、纯果肉的果肉质感展示、被咬一口后的截面展示。不要AI图。`;
+
 const realFruitImageResearchPrompt = {
   id:'builtin-real-fruit-image-research', title:'水果五种状态真实图片检索', category:'其他',
-  tags:['图片检索','真实照片','非AI图','五种状态','果肉质感'], favorite:true, updated:Date.now()+20,
-  content:`帮我找一些{{水果名称}}的图片，凸显它的卖点、质感以及结构，包括：完整外形、被剥皮后的无皮状态、被切开的半果展示、纯果肉的果肉质感展示、被咬一口后的截面展示。不要AI图。`
+  tags:['图片检索','真实照片','非AI图','五种状态','果肉质感'], favorite:true, updated:Date.now()+22,
+  content:`帮我找一些{{水果名称}}的图片，凸显它的卖点、质感以及结构（包括尺寸大小），包括：完整外形、半果展示、被剥皮后的无皮状态、半果无皮展示、果块展示、纯果肉的果肉质感展示、被咬一口后的截面展示。不要 AI 图。`
 };
 
 const fruitHostSales30sPrompt = {
@@ -408,7 +410,7 @@ const ASSETS_KEY = 'prompt-pocket-assets-v1';
 let assets = (()=>{ try{return JSON.parse(localStorage.getItem(ASSETS_KEY))||[]}catch{return[]} })();
 let pendingAssetImage = '';
 
-function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===replaceGirlAndEnvironmentVideoPromptV2.id?replaceGirlAndEnvironmentVideoPromptV2:p.id===realFruitImageResearchPrompt.id?realFruitImageResearchPrompt:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt,fruitTasteTvc15sPrompt,fruitHostSales45sPrompt,realFruitImageResearchPrompt,fruitHostSales30sPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); return saved; } catch { return [fruitHostSales30sPrompt,realFruitImageResearchPrompt,fruitHostSales45sPrompt,fruitTasteTvc15sPrompt,fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
+function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===realFruitImageResearchPrompt.id&&p.content===legacyRealFruitImagePromptContent?{...p,content:realFruitImageResearchPrompt.content,updated:Date.now()}:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt,fruitTasteTvc15sPrompt,fruitHostSales45sPrompt,realFruitImageResearchPrompt,fruitHostSales30sPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); localStorage.setItem(STORAGE_KEY,JSON.stringify(saved)); return saved; } catch { return [fruitHostSales30sPrompt,realFruitImageResearchPrompt,fruitHostSales45sPrompt,fruitTasteTvc15sPrompt,fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
 function savePrompts(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(prompts)); render(); }
 function esc(value=''){ return value.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 function showToast(text){ const el=$('#toast'); el.textContent=text; el.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>el.classList.remove('show'),1800); }
