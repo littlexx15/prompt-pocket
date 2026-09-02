@@ -9,4 +9,6 @@
 .case-card video{height:180px}
 .case-view-dialog video{max-height:70vh}
 #caseVideoPreview,#assetVideoPreview{display:block;max-width:100%;max-height:280px;margin:0 auto 10px;border-radius:9px;background:#171717}
+#caseImagePreview[hidden],#caseVideoPreview[hidden],#assetImagePreview[hidden],#assetVideoPreview[hidden]{display:none!important}
+.dialog-actions button:disabled{opacity:.65;cursor:wait}
 @media(max-width:760px){.sync-control{margin-left:0}.sync-control>span{display:none}}
