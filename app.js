@@ -108,6 +108,296 @@ const fruitStrongBenefitCoverPrompt = {
   content:`你是短视频生鲜带货封面文案策划，擅长创作强利益刺激、强价格冲击、强占便宜心理的三段式封面文案。\n\n请围绕{{水果名称}}，一次性生成 3 套不同风格的三段式短视频带货封面文案。\n\n【创作目标】\n文案要有强烈的信息流带货感，不要只写“香甜多汁、新鲜好吃”，而要让消费者产生以下心理：\n- 这次价格力度很大\n- 现在买比较占便宜\n- 错过这波会觉得可惜\n- 花同样的钱能得到更多\n- 商家这次像是在认真让利\n- 值得立刻点进商品页看看\n\n整体语言可以夸张、接地气、有冲突感、有吆喝感，允许使用“百年难遇”“价格打下来了”“这波太狠了”“真不给自己留余地”等情绪化表达。\n\n但不得编造具体且可核验的经营事实，例如虚构成本、利润、库存、销量、亏损金额、原价或降价幅度。\n\n【固定版式】\n每个版本只能包含三行。\n\n第一行【顶部大标题】：\n必须是强利益钩子、价格冲击钩子或反常识钩子。要求短、狠、醒目，优先制造“怎么会这么划算”的感觉。字数控制在 8—18 个汉字。\n\n第二行【中间辅助小字】：\n用一整句话承接第一行，进一步放大便宜感、份量感、让利感或购买获得感。可适当加入{{水果名称}}的真实口感、果肉、汁水、香气、外观或食用体验。字数控制在 16—32 个汉字。\n\n第三行【底部黄色按钮大字】：\n写一句直接催单的话，制造当季、活动、尝鲜和错过可惜的氛围。字数控制在 5—12 个汉字。\n\n【三个版本方向】\n\n版本1：价格炸场款\n重点突出价格反差和活动冲击感。\n\n语言风格参考：\n百年难遇，这价格真打下来了\n今年这波，价格直接没绷住\n不是看错了，这次真敢卖\n这价格一摆，谁看了不心动\n原来水果还能这么买\n这次活动，价格有点不讲道理\n价格往下走，品质没缩水\n这波力度，真不像平时\n\n注意：不要填写具体价格，除非用户提供了真实价格。不要虚构原价、现价、立减金额或折扣比例。\n\n版本2：商家让利款\n重点营造“商家这次很舍得”“这波利润压得很低”的感觉，但不要写成具体事实。\n\n语言风格参考：\n这次真没给自己留多少\n商家这波，诚意直接摆桌上\n不是随便做活动，这次真下本\n这批水果，价格压得够狠\n真不是天天都有这力度\n为了让大家尝鲜，这次豁出去了\n这波不讲排面，只讲实惠\n看得出来，这次真想让你买\n\n可以写“几乎没留空间”“价格压得很低”“这次很舍得”，但不要写“只赚三毛”“赔钱卖”“低于成本”。\n\n版本3：占便宜催单款\n重点放大消费者的获得感，让人产生“不买像少赚了”的感觉。\n\n语言风格参考：\n同样的钱，这次真能多吃几顿\n这份量拿回家，全家都能解馋\n今天不尝，回头真容易惦记\n懂吃水果的，这波先看一眼\n这次买水果，钱包没那么疼\n想吃的别忍，这波挺合适\n花得不多，满足感倒挺足\n这份便宜，不占白不占\n\n【夸张表达规则】\n允许使用以下类型的夸张修辞：百年难遇、价格没绷住、力度有点狠、商家真舍得、这波下本了、价格压下来了、钱包压力小了、看一眼就想囤、错过容易惦记、不占白不占、这次真敢卖、活动诚意拉满、价格直接打下来、真不给自己留余地、像是来给大家送实惠的。\n\n禁止编造以下具体事实：只赚三毛、一单只赚几分钱、亏本卖、赔钱清仓、成本价出售、仓库压货、卖不掉、老板跑路、厂家倒闭、库存只剩多少箱、一天卖出多少单、原价多少、现价多少、降价百分之多少。除非用户明确提供这些真实信息。\n\n【文案风格】\n- 口语化、情绪化、带吆喝感。\n- 不要写得像品牌广告，不要文绉绉。\n- 不要只堆砌产品卖点，必须突出消费者利益。\n- 允许有适度的标题党感，但不能让三套文案完全同质化。\n- 第一套刺激价格敏感，第二套刺激商家让利感，第三套刺激占便宜和错过心理。\n- {{水果名称}}的口感、果肉、汁水、香气和食用体验必须符合真实水果特征，不得套用其他水果卖点。\n\n【参考语感】\n百年难遇，价格真被打下来了\n这次不是随便做活动，商家是真下本\n同样的钱，这回能多吃好几顿\n这波不占，回头真容易惦记\n价格都到这儿了，还不尝一口\n当季水果赶上这力度，真不常见\n不是水果不值钱，是这次活动太敢了\n这一波，爱吃水果的先别划走\n\n参考内容只用于学习语感，不得机械照搬。\n\n【输出格式】\n严格按照以下格式输出，不得添加解释：\n\n【版本1｜价格炸场款】\n第一行（大标题）：\n第二行（辅助小字）：\n底部黄框大字：\n\n【版本2｜商家让利款】\n第一行（大标题）：\n第二行（辅助小字）：\n底部黄框大字：\n\n【版本3｜占便宜催单款】\n第一行（大标题）：\n第二行（辅助小字）：\n底部黄框大字：`
 };
 
+const fruitTasteTvc15sPrompt = {
+  id:'builtin-fruit-taste-tvc-15s', title:'15秒水果口感TVC分镜与视频提示词', category:'视频',
+  tags:['15秒','TVC','口感卖点','千川','9:16','完整提示词'], favorite:true, updated:Date.now()+16,
+  content:`你是水果信息流短视频导演，擅长把水果的真实口感特点转化为观众能直接看懂的动作证据。请参考我上传的{{水果名称}}各种状态图片，以及我随图片提供的真实尺寸、果皮厚度、果瓣或果块尺寸等数据，为{{水果名称}}设计一条完整、连贯、可直接用于AI视频生成的抖音千川信息流TVC。
+
+【基础规格】
+- 总时长严格为15秒，竖屏9:16，正常连续视频，不是九宫格、拼图或分屏。
+- 写实原生手机拍摄质感，自然光、生活化、高食欲感，但不过度商业精修。
+- 全片使用同一人物或同一双手、同一服装、同一场景、同一台面、同一光线方向和同一套道具。
+- 字幕只放在底部安全区，避开水果、果肉、手部动作、人物嘴部和关键道具；字幕简短清晰，不得挡住画面主体或被平台UI遮挡。
+
+【先做策略判断】
+1. 根据{{水果名称}}的真实品种特性和参考图，从爽脆、细嫩、软糯、绵密、清甜、酸甜、汁胞饱满、汁水充足、瓣膜易分离等候选方向中，只选择一个最适合在15秒内被画面证明的核心口感卖点。
+2. 不得把脆、甜、多汁、香气等全部塞进一条视频。观众看完只需要记住一个口感特点。
+3. 为该口感选择一个真实可见的主证明动作：例如一次切开、沿自然纹理掰开、轻撕果瓣、展示切面、轻压果肉或试吃咬开。动作必须符合{{水果名称}}的真实结构，不能套用其他水果的吃法。
+4. 不得虚构糖度、功效、产地、认证、销量、现摘现发或其他未由用户提供的事实。
+
+【水果身份和尺寸锁定】
+- 上传的水果参考图是{{水果名称}}品种、形状、表皮、果肉颜色、果皮厚度、籽核结构、成熟度和汁水状态的唯一外观依据。
+- 严格采用用户随图提供的真实尺寸数据，并在所有镜头中保持同一比例；如某项尺寸未提供，只按参考图保守还原，不自行编造数字。
+- 完整果、剥开果、果瓣、果肉块和切面必须属于同一品种、同一成熟度；水果从完整到切开、剥开、分瓣或咬开的变化必须由可见动作或合理剪辑产生，禁止状态骤变和已切水果自动复原。
+- 只能出现符合该品种的正常果蒂、果柄、顶部、底部、果皮、白瓤、果膜、籽或果核；禁止水果变形、多头、多屁股、多蒂、双蒂、果瓣数量跳变和错误内部结构。
+
+【15秒镜头设计规则】
+- 设计4至6个镜头，各镜时长相加必须正好15秒；节奏前快后稳，0至3秒先给最有吸引力的口感证据或结果画面。
+- 每个镜头只能有一个主要动作，并明确写出起始状态、单一动作过程和结束状态；上一镜的结束状态必须能合理承接下一镜的起始状态。
+- 景别、角度和运镜要有变化，但每镜最多一种简单运镜。切、剥、掰、咬等高风险接触动作使用固定机位或轻微跟随，禁止同时急推、环绕和摇晃。
+- 动作必须适合{{水果名称}}：可包含完整果尺寸展示、剥皮或分瓣、断面纹理、轻掰、试吃、果肉定格等，但只选择服务于唯一口感卖点的必要镜头。
+- 试吃只咬真实可食用的果肉，禁止咬果蒂、果柄、果芯、果核、硬壳、厚皮或不可食用白瓤。咬口由真实咬合形成，边缘自然。
+- 若表现汁水，只呈现符合真实水果含水状态的切面湿润、汁胞水光、咬口少量自然汁水或刀面薄水痕；禁止凭空喷汁、像水枪一样爆浆、汁水逆重力或台面瞬间积水。
+
+【声音设计】
+- 每镜写明环境声、动作音效、口播或短促TVC节奏音乐的使用方式。
+- 爽脆用真实同步脆响，汁水感用轻微撕瓣、切开或咬合声，软糯绵密用轻柔压入和咀嚼声；声音强度必须符合真实动作。
+- 口播和字幕只强化选定的一个口感卖点，不添加第二卖点。人声清楚，音乐不得盖住动作声和口播。
+
+【输出格式】
+先输出：
+核心口感卖点：
+选择理由：
+可视化证明动作：
+统一场景与连续性锁定：
+
+再以清晰的段落逐镜输出，严格包含以下字段，不要省略：
+
+【镜头1｜0.0s—X.Xs】
+时长：
+景别：
+画面内容：
+起始状态：
+动作／运镜：
+结束状态：
+声音设计：
+字幕（底部安全区）：
+连续性与禁止项：
+
+后续镜头沿用相同格式，所有镜头累计必须正好15秒。
+
+最后输出：
+【完整15秒AI视频生成提示词】
+把前述所有镜头编译成一段可直接复制到视频生成工具的完整提示词。必须完整重述：15秒、9:16、唯一核心口感、参考图权责、水果真实尺寸与品种锁定、统一人物／手部／服装／场景／光线／道具、每镜时间段、起始状态、单一动作、结束状态、景别、唯一运镜、声音、字幕底部安全区和镜间连续性。不得使用“同上”“延续上一镜”等依赖上下文的省略表达。
+
+【负面词】
+九宫格，十二宫格，拼图，分屏，画中画，字幕遮挡主体，字幕进入人物嘴部或手果动作区域，平台UI遮挡字幕，水果品种漂移，水果比例错误，尺寸忽大忽小，水果变形，多头，多屁股，多蒂，双蒂，果瓣增生，籽核数量跳变，错误果肉颜色，错误内部结构，水果状态骤变，已切水果自动复原，果肉干巴，果肉塑料感，假爆汁，果汁凭空喷射，果汁逆重力，咬果蒂，咬果柄，咬果芯，咬果核，咬厚皮，咬白瓤，多余手指，畸形手，手果穿模，刀具穿模，危险用刀，人物变脸，换人，换服装，场景跳变，光线跳变，无关水果，无关人物，乱码文字，价格，水印，品牌标识，卡通感，CG感，棚拍感，过度广告精修。`
+};
+
+const fruitHostSales45sPrompt = {
+  id:'builtin-fruit-host-sales-45s', title:'人物口播45秒水果带货脚本（3×15秒）', category:'文案',
+  tags:['人物口播','45秒','3段15秒','带货脚本','卖点','购买理由'], favorite:true, updated:Date.now()+17,
+  content:`你是抖音千川生鲜带货口播策划和水果短视频导演。请围绕{{水果名称}}，设计一条由同一位真人主播出镜的45秒竖屏带货口播视频，并严格拆成3条可以分别生成、分别剪辑的15秒视频。
+
+【任务目标】
+整条45秒视频依次回答三个问题：
+1. 为什么值得吃{{水果名称}}？
+2. 为什么现在值得考虑购买？
+3. {{水果名称}}有什么真实卖点，消费者能得到什么具体食用利益？
+
+这里的“好处”优先写消费者可以直接感受到的利益，例如解馋、清爽、方便分享、果肉足、食用体验好、适合家庭场景等；不要擅自写治疗、减肥、美白、降血糖、增强免疫力等医疗或保健功效。
+
+【事实与广告合规】
+- 先核对{{水果名称}}的真实品种特征、典型口感、果肉结构、果皮或果瓣特点、常见食用方式和合理消费场景。
+- 只采用可靠且符合该品种的卖点，不得把其他水果的颜色、结构、口感和吃法套进来。
+- “为什么现在买”只能使用可以成立的理由，例如用户已提供的应季信息、真实活动信息、当前食用场景或尝鲜需求。若时令、库存、优惠、发货、产地或价格没有可靠信息，不得虚构“最后一批、马上下市、现摘现发、卖完没有、全年最低、限量”等紧迫事实。
+- 不编造糖度、营养含量、功效、认证、销量、库存、原价、折扣、赠品或商家亏损。无法确认的信息写成“待用户补充”，不要放进口播。
+- 语言真诚、有感染力、接地气、有带货节奏，但符合广告法，不使用“最好、第一、顶级、百分百”等绝对化表达。
+
+【人物设定】
+- 先设计一位适合{{水果名称}}的真人主播，包括年龄感、气质、服装、说话方式、站姿和生活化场景；人物要可信、亲切，不能像背广告。
+- 3段视频必须是同一位主播：同一张脸、同一发型、同一服装、同一妆容、同一声音和说话节奏。
+- 全片使用同一主场景、相同时间与光线方向；水果、盘子、果皮、果瓣或果块的位置变化必须符合动作顺序。
+- 如果用户上传人物图、场景图或水果图，分别作为人物、环境和产品外观的唯一参考，不互相覆盖。
+
+【三段内容分工】
+
+【视频1｜0—15秒｜为什么值得吃】
+- 开头3秒必须有一句自然、抓人的问题型、体验型或反常识钩子。
+- 只围绕一个最有辨识度、最容易被画面证明的核心食用体验展开。
+- 配一个证明动作，例如展示真实果肉、沿自然纹理掰开一瓣、轻撕果膜、举到镜头前或自然试吃；一镜只做一个主要动作。
+- 不提前讲活动和催单，不把全部卖点塞进第一段。
+
+【视频2｜15—30秒｜为什么现在买】
+- 用真实、温和的时机理由承接第一段，例如当下尝鲜、家庭分享或用户已经提供的应季信息。
+- 只强化一个“现在考虑”的理由，不制造虚假稀缺和价格恐慌。
+- 画面用与时机理由匹配的动作证明，例如拿出一盘可分享果肉、展示一颗果能分出的真实份量或准备家庭食用场景。
+- 本段作为独立生成视频，提示词必须完整重述人物、水果、场景和连续性，不能只写“接上一段”。
+
+【视频3｜30—45秒｜卖点、利益与行动引导】
+- 选择1至2个彼此关联的真实卖点，转化为消费者能理解的具体利益，不重复前两段原句。
+- 用已经建立的水果状态完成一个结果展示或自然试吃定格。
+- 结尾给出温和明确的行动引导，例如“想尝这口的，可以点进来看看”，不得虚构优惠、库存或倒计时。
+- 本段同样必须可以独立生成，不依赖“保持上一段一致”等上下文省略。
+
+【口播节奏】
+- 每段口播控制在约45至60个汉字，以正常中文语速在15秒内自然说完；宁可简短，也不要抢字、吞字或超时。
+- 3段口播合计组成一条逻辑完整的45秒文案，但每段单独播放也能听懂。
+- 句子口语化、短句化，避免堆砌形容词；三段的开头、句式和情绪推进要明显不同。
+- 口型必须与中文口播逐字同步，人物在咀嚼时不能同时说长句；试吃声和口播错开。
+
+【画面与安全限制】
+- 竖屏9:16，真实原生手机拍摄质感，自然光，生活化，不摆拍，不过度商业精修。
+- 每段安排2至4个镜头，每镜只有一个主要动作，并写明起始状态、动作过程和结束状态；水果从完整、剥开、分瓣到试吃的变化必须可见且合理。
+- 试吃只咬{{水果名称}}真实可食用的果肉，禁止咬果蒂、果柄、果芯、果核、硬壳、厚皮或不可食用白瓤。
+- 果肉保持符合品种的真实水润度；如果表现汁水，只在真实受力或咬口位置自然出现，禁止凭空喷汁和夸张爆浆。
+- 字幕位于底部安全区，不遮挡水果、手部动作、人物嘴部和关键道具，也不进入平台UI区域。
+
+【输出格式】
+严格按以下结构输出：
+
+【人物设定】
+人物形象：
+服装与气质：
+统一场景：
+说话风格：
+
+【45秒总策略】
+核心受众：
+总钩子：
+三个分段的逻辑：
+已核实卖点：
+待用户补充信息：
+
+【视频1｜15秒｜为什么值得吃】
+本段核心：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【视频2｜15秒｜为什么现在买】
+本段核心：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【视频3｜15秒｜卖点、利益与行动引导】
+本段核心：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【45秒连续剪辑说明】
+说明三段拼接时的人物、场景、水果状态、道具、光线、声音和字幕如何自然衔接；不得使用会让独立生成提示词失去信息的“同上”或“保持一致”表达。
+
+统一负面限制：人物变脸，换人，换发型，换服装，声音变化，多人抢镜，口型不同步，咀嚼时强行说话，水果品种漂移，颜色错误，内部结构错误，水果变形，多头，多屁股，多蒂，双蒂，水果状态骤变，已剥水果自动复原，果瓣或果块数量跳变，咬果蒂，咬果柄，咬果芯，咬果核，咬硬壳，咬厚皮，咬白瓤，果肉干巴，假爆汁，果汁凭空喷射，多余手指，畸形手，手果穿模，字幕遮挡主体，字幕进入平台UI区，虚假功效，虚假时令，虚假库存，虚假优惠，绝对化广告词，无关水果，无关人物，乱码文字，价格，水印，品牌标识，卡通感，CG感，棚拍感，过度广告精修。`
+};
+
+const legacyRealFruitImagePromptContent = `帮我找一些{{水果名称}}的图片，凸显它的卖点、质感以及结构，包括：完整外形、被剥皮后的无皮状态、被切开的半果展示、纯果肉的果肉质感展示、被咬一口后的截面展示。不要AI图。`;
+
+const realFruitImageResearchPrompt = {
+  id:'builtin-real-fruit-image-research', title:'水果五种状态真实图片检索', category:'其他',
+  tags:['图片检索','真实照片','非AI图','五种状态','果肉质感'], favorite:true, updated:Date.now()+22,
+  content:`帮我找一些{{水果名称}}的图片，凸显它的卖点、质感以及结构（包括尺寸大小），包括：完整外形、半果展示、被剥皮后的无皮状态、半果无皮展示、果块展示、纯果肉的果肉质感展示、被咬一口后的截面展示。不要 AI 图。`
+};
+
+const fruitHostSales30sPrompt = {
+  id:'builtin-fruit-host-sales-30s', title:'30秒真人主播水果带货脚本（2×15秒）', category:'视频',
+  tags:['真人口播','30秒','2段15秒','千川','带货视频','独立生成'], favorite:true, updated:Date.now()+21,
+  content:`你是抖音千川生鲜带货口播策划和水果短视频导演。请围绕{{水果名称}}，设计一条30秒真人主播竖屏带货视频，并严格拆成2条可独立生成、独立剪辑的15秒视频。
+
+【先做事实核对】
+先核对{{水果名称}}真实的外观、果肉结构、典型口感、果皮/果瓣/果核特点、常见吃法和消费场景。只写真实可靠卖点，不得套用其他水果特征。
+
+不得编造糖度、功效、产地、时令、库存、销量、价格、优惠、赠品、现摘现发等信息。无法确认的内容写入“待用户补充”，不要放进口播。
+
+消费者利益优先写真实可感知体验，例如：解馋、清爽、果肉足、吃着方便、适合分享、适合家庭/办公室/饭后等。禁止医疗保健功效及绝对化广告词。
+
+【人物与场景】
+先设计一位适合{{水果名称}}的真人主播，明确年龄感、发型、服装、气质、说话方式和生活化场景。
+
+两条视频必须为同一主播：
+同一张脸、发型、服装、妆容、声音和语速。
+
+全片使用同一场景、同一光线方向、同一桌面和道具。水果从完整、切开/剥开、展示到试吃的状态变化必须合理连续。
+
+如用户上传人物图、场景图、水果图，分别作为人物、环境、产品外观的唯一参考。
+
+【视频1｜0—15秒｜为什么值得吃】
+目标：先让观众产生食欲。
+
+要求：
+
+- 前3秒必须有自然抓人的体验型、疑问型或反差型钩子。
+- 只讲一个最有辨识度、最容易用画面证明的核心体验。
+- 配一个真实证明动作，例如切开、剥开、分瓣、展示果肉、举近镜头或自然试吃。
+- 不讲优惠、库存和催单。
+- 口播约45—55个汉字。
+
+【视频2｜15—30秒｜卖点+购买理由+转化】
+目标：让观众知道买回去具体能得到什么体验。
+
+要求：
+
+- 补充1—2个真实且相关的卖点。
+- 将卖点转换成消费者利益，例如“果肉厚→吃起来更有满足感”“好剥→吃起来省事”。
+- 给出一个真实温和的“现在可以考虑”的理由，例如尝鲜、家庭分享、下午茶、饭后等；只有确认时令或活动后才能使用应季、优惠等理由。
+- 结尾使用温和行动引导，例如：“喜欢这种口感的，可以点进来看看。”
+- 口播约45—55个汉字。
+
+【画面要求】
+
+- 9:16竖屏，真实手机实拍质感，自然光，生活化，不过度商业精修。
+- 每条15秒安排3个镜头：0—3秒、3—8秒、8—15秒。
+- 每镜只做一个主要动作。
+- 每镜写清楚：起始状态→动作过程→结束状态。
+- 中文口型逐字同步。
+- 咀嚼时不说长句。
+- 只吃水果真实可食用部分。
+- 汁水只能在切口、受力处或咬口自然出现，禁止夸张爆浆。
+- AI画面中不生成字幕，字幕后期添加。
+
+【输出格式】
+
+【人物设定】
+人物形象：
+服装与气质：
+统一场景：
+说话风格：
+
+【30秒总策略】
+核心受众：
+总钩子：
+视频1逻辑：
+视频2逻辑：
+已核实卖点：
+待用户补充信息：
+
+【视频1｜15秒｜为什么值得吃】
+本段核心：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【视频2｜15秒｜卖点、购买理由与行动引导】
+本段核心：
+真实卖点：
+消费者利益：
+为什么现在可以考虑：
+口播文案：
+0—3秒画面／动作／字幕：
+3—8秒画面／动作／字幕：
+8—15秒画面／动作／字幕：
+独立AI视频提示词：
+负面词：
+
+【30秒连续剪辑说明】
+说明两段拼接时的人物、场景、光线、水果状态、道具、声音和字幕如何自然衔接。
+
+独立AI提示词必须完整写明人物、服装、场景、水果真实外观、起始状态、动作、口播和结束状态，不能写“接上一段”“同上”“保持一致”。
+
+【统一负面限制】
+人物变脸，换人，换发型，换服装，声音变化，口型不同步，咀嚼时说长句，多余手指，畸形手，手果穿模，水果品种漂移，颜色错误，内部结构错误，多蒂，双蒂，水果数量跳变，水果凭空消失，已切水果自动复原，错误剥皮或分瓣，咬果蒂，咬果柄，咬果芯，咬果核，咬厚皮，果肉干巴，假爆汁，果汁凭空喷射，字幕遮挡主体，乱码，价格，水印，品牌标识，虚假功效，虚假时令，虚假库存，虚假优惠，绝对化广告词，无关水果，卡通感，CG感，棚拍感，过度商业精修。`
+};
+
+const personTastingFruitImageSearchPrompt = {
+  id:'builtin-person-tasting-fruit-image-search', title:'人物试吃水果双场景真实图片检索', category:'其他',
+  tags:['图片检索','人物试吃','真实照片','非AI图','果园','居家'], favorite:true, updated:Date.now()+23,
+  content:`帮我检索2张人物正在试吃{{水果名称}}的真实摄影图片：一张是果园场景，一张是家里场景。两张图片都必须同时出现人物和{{水果名称}}，人物必须正在真实试吃水果，不能只是拿着或展示。禁止AI图。`
+};
+
 let prompts = loadPrompts();
 let activeCategory = '全部';
 let activeTag = '全部';
@@ -122,12 +412,14 @@ const caseDialog = $('#caseDialog');
 const CASES_KEY = 'prompt-pocket-cases-v1';
 let cases = (()=>{ try{return JSON.parse(localStorage.getItem(CASES_KEY))||[]}catch{return[]} })();
 let pendingCaseImage = '';
+let pendingCaseFile = null;
 const ASSETS_KEY = 'prompt-pocket-assets-v1';
 let assets = (()=>{ try{return JSON.parse(localStorage.getItem(ASSETS_KEY))||[]}catch{return[]} })();
 let pendingAssetImage = '';
+let pendingAssetFile = null;
 
-function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===replaceGirlAndEnvironmentVideoPromptV2.id?replaceGirlAndEnvironmentVideoPromptV2:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); return saved; } catch { return [fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
-function savePrompts(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(prompts)); render(); }
+function loadPrompts(){ try { let saved=JSON.parse(localStorage.getItem(STORAGE_KEY)) || starterPrompts; saved=saved.map(p=>p.id===realFruitImageResearchPrompt.id&&p.content===legacyRealFruitImagePromptContent?{...p,content:realFruitImageResearchPrompt.content,updated:Date.now()}:p); [videoSplitPrompt,detailedFruitStoryboardPrompt,passionFruitStoryboardPrompt,passionFruitDessertStoryboardPrompt,citrusSegmentStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusOpeningServingStoryboardPrompt,fruitFunctionalVideoPrompt,fourScriptsToStoryboardPrompt,storyboardToTenSecondVideoPrompt,fruitMarketingTagsPrompt,fruitCoverThreeLinePrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitStrongBenefitCoverPrompt,fruitTasteTvc15sPrompt,fruitHostSales45sPrompt,realFruitImageResearchPrompt,fruitHostSales30sPrompt,personTastingFruitImageSearchPrompt].forEach(item=>{if(!saved.some(p=>p.id===item.id))saved=[item,...saved]}); localStorage.setItem(STORAGE_KEY,JSON.stringify(saved)); return saved; } catch { return [personTastingFruitImageSearchPrompt,fruitHostSales30sPrompt,realFruitImageResearchPrompt,fruitHostSales45sPrompt,fruitTasteTvc15sPrompt,fruitStrongBenefitCoverPrompt,replaceGirlAndEnvironmentVideoPromptV2,fruitCoverThreeLinePrompt,fruitMarketingTagsPrompt,storyboardToTenSecondVideoPrompt,fourScriptsToStoryboardPrompt,fruitFunctionalVideoPrompt,citrusOpeningServingStoryboardPrompt,pomeloOpeningStoryboardPrompt,citrusSegmentStoryboardPrompt,passionFruitDessertStoryboardPrompt,passionFruitStoryboardPrompt,detailedFruitStoryboardPrompt,videoSplitPrompt,...starterPrompts]; } }
+function savePrompts(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(prompts)); render(); window.cloudSync?.queueSave(); }
 function esc(value=''){ return value.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 function showToast(text){ const el=$('#toast'); el.textContent=text; el.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>el.classList.remove('show'),1800); }
 
@@ -159,13 +451,14 @@ async function copyPrompt(prompt){
 }
 
 function saveCases(){
-  try{localStorage.setItem(CASES_KEY,JSON.stringify(cases));render();}
+  try{localStorage.setItem(CASES_KEY,JSON.stringify(cases));render();window.cloudSync?.queueSave();}
   catch{alert('案例图片占用空间较大，浏览器存储已满。请删除部分案例后再试。');}
 }
-function resetCaseForm(){ $('#caseForm').reset(); pendingCaseImage=''; $('#caseImagePreview').hidden=true; $('#caseImagePreview').removeAttribute('src'); $('#pasteHint').hidden=false; }
+function resetCaseForm(){ $('#caseForm').reset(); pendingCaseImage='';pendingCaseFile=null; $('#caseImagePreview').hidden=true; $('#caseImagePreview').removeAttribute('src');$('#caseVideoPreview').hidden=true;$('#caseVideoPreview').removeAttribute('src'); $('#pasteHint').hidden=false; }
+function mediaHtml(item, alt=''){return item.mediaType==='video'?`<video src="${item.image}" controls preload="metadata"></video>`:`<img src="${item.image}" alt="${esc(alt)}">`;}
 function renderCases(promptId){
   const list=cases.filter(c=>c.promptId===promptId).sort((a,b)=>b.created-a.created);
-  $('#caseGallery').innerHTML=list.length?list.map(c=>`<article class="case-card" data-view-case="${c.id}">${c.image?`<img src="${c.image}" alt="${esc(c.name)}">`:`<div class="case-card-text">${esc(c.text||'暂无内容')}</div>`}<button class="case-delete" data-delete-case="${c.id}" title="删除">×</button><div class="case-meta"><strong>${esc(c.name)}</strong><span>${esc(c.tool||'未记录工具')}</span></div></article>`).join(''):`<div class="case-empty">还没有案例。把刚生成的图片或文案复制过来吧。</div>`;
+  $('#caseGallery').innerHTML=list.length?list.map(c=>`<article class="case-card" data-view-case="${c.id}">${c.image?mediaHtml(c,c.name):`<div class="case-card-text">${esc(c.text||'暂无内容')}</div>`}<button class="case-delete" data-delete-case="${c.id}" title="删除">×</button><div class="case-meta"><strong>${esc(c.name)}</strong><span>${esc(c.tool||'未记录工具')}</span></div></article>`).join(''):`<div class="case-empty">还没有案例。把刚生成的图片、视频或文案保存过来吧。</div>`;
 }
 function openCases(promptId){
   const p=prompts.find(x=>x.id===promptId); $('#casePromptId').value=promptId; $('#caseDialogTitle').textContent=`${p.title} · 效果案例`; resetCaseForm(); $('#casePromptId').value=promptId; renderCases(promptId); caseDialog.showModal();
@@ -173,20 +466,20 @@ function openCases(promptId){
 function compressImage(file){
   return new Promise((resolve,reject)=>{const img=new Image();const url=URL.createObjectURL(file);img.onload=()=>{let {width,height}=img;const max=1400;if(Math.max(width,height)>max){const scale=max/Math.max(width,height);width*=scale;height*=scale}const canvas=document.createElement('canvas');canvas.width=Math.round(width);canvas.height=Math.round(height);canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);URL.revokeObjectURL(url);resolve(canvas.toDataURL('image/jpeg',.78))};img.onerror=reject;img.src=url;});
 }
-async function acceptImage(file){if(!file?.type.startsWith('image/'))return;pendingCaseImage=await compressImage(file);$('#caseImagePreview').src=pendingCaseImage;$('#caseImagePreview').hidden=false;$('#pasteHint').hidden=true;}
-function saveAssets(){try{localStorage.setItem(ASSETS_KEY,JSON.stringify(assets));render()}catch{alert('参考图占用空间较大，浏览器存储已满。请先导出备份并删除部分素材。')}}
-function resetAssetForm(){const id=$('#assetPromptId').value;$('#assetForm').reset();$('#assetPromptId').value=id;pendingAssetImage='';$('#assetImagePreview').hidden=true;$('#assetImagePreview').removeAttribute('src');$('#assetPasteHint').hidden=false;}
-function renderAssets(promptId){const list=assets.filter(a=>a.promptId===promptId).sort((a,b)=>b.created-a.created);$('#assetGallery').innerHTML=list.length?list.map(a=>`<article class="case-card"><img src="${a.image}" alt="${esc(a.name)}"><button class="case-delete" data-delete-asset="${a.id}" title="删除">×</button><div class="case-meta"><strong>${esc(a.name)}</strong><span>${esc(a.type)}</span></div><div class="asset-actions"><button data-copy-asset="${a.id}">复制图片</button><button data-download-asset="${a.id}">下载</button></div></article>`).join(''):`<div class="case-empty">还没有参考资产。复制人物、场景或水果图片后直接粘贴即可。</div>`;}
+async function acceptImage(file){if(!file)return;if(file.type.startsWith('video/')&&!window.cloudSync?.isSignedIn()){alert('视频文件较大，请先登录云同步后再上传。');return}if(!file.type.startsWith('image/')&&!file.type.startsWith('video/'))return;pendingCaseFile=file;$('#pasteHint').hidden=true;if(file.type.startsWith('video/')){pendingCaseImage=URL.createObjectURL(file);$('#caseVideoPreview').src=pendingCaseImage;$('#caseVideoPreview').hidden=false;$('#caseImagePreview').hidden=true}else{pendingCaseImage=await compressImage(file);$('#caseImagePreview').src=pendingCaseImage;$('#caseImagePreview').hidden=false;$('#caseVideoPreview').hidden=true}}
+function saveAssets(){try{localStorage.setItem(ASSETS_KEY,JSON.stringify(assets));render();window.cloudSync?.queueSave()}catch{alert('参考图占用空间较大，浏览器存储已满。请先导出备份并删除部分素材。')}}
+function resetAssetForm(){const id=$('#assetPromptId').value;$('#assetForm').reset();$('#assetPromptId').value=id;pendingAssetImage='';pendingAssetFile=null;$('#assetImagePreview').hidden=true;$('#assetImagePreview').removeAttribute('src');$('#assetVideoPreview').hidden=true;$('#assetVideoPreview').removeAttribute('src');$('#assetPasteHint').hidden=false;}
+function renderAssets(promptId){const list=assets.filter(a=>a.promptId===promptId).sort((a,b)=>b.created-a.created);$('#assetGallery').innerHTML=list.length?list.map(a=>`<article class="case-card">${mediaHtml(a,a.name)}<button class="case-delete" data-delete-asset="${a.id}" title="删除">×</button><div class="case-meta"><strong>${esc(a.name)}</strong><span>${esc(a.type)}</span></div><div class="asset-actions">${a.mediaType==='video'?'':`<button data-copy-asset="${a.id}">复制图片</button>`}<button data-download-asset="${a.id}">下载</button></div></article>`).join(''):`<div class="case-empty">还没有参考资产。复制图片或选择视频后保存即可。</div>`;}
 function openAssets(promptId){const p=prompts.find(x=>x.id===promptId);$('#assetPromptId').value=promptId;$('#assetDialogTitle').textContent=`${p.title} · 参考资产`;resetAssetForm();renderAssets(promptId);$('#assetDialog').showModal();}
 function openGlobalAssetEditor(){const gallery=$('#assetGallery');gallery.hidden=true;$('#assetPromptId').value='';$('#assetDialogTitle').textContent='添加到公共资产库';resetAssetForm();$('#assetDialog').showModal();}
 function renderGlobalAssets(){
   const search=$('#searchInput').value.trim().toLowerCase();const types=['全部',...new Set(assets.map(a=>a.type))];
   $('#assetFilterChips').innerHTML=types.map(t=>`<button class="chip ${t===activeAssetType?'active':''}" data-asset-type="${esc(t)}">${esc(t)}</button>`).join('');
   const list=assets.filter(a=>(activeAssetType==='全部'||a.type===activeAssetType)&&(!search||[a.name,a.type,a.note].join(' ').toLowerCase().includes(search))).sort((a,b)=>b.created-a.created);
-  $('#globalAssetGallery').innerHTML=list.length?list.map(a=>`<article class="case-card"><img src="${a.image}" alt="${esc(a.name)}"><button class="case-delete" data-delete-asset="${a.id}" title="删除">×</button><div class="case-meta"><strong>${esc(a.name)}</strong><span>${esc(a.type)}</span></div>${a.note?`<div class="asset-note">${esc(a.note)}</div>`:''}<div class="asset-actions"><button data-copy-asset="${a.id}">复制图片</button><button data-download-asset="${a.id}">下载</button></div></article>`).join(''):`<div class="asset-empty">资产库还是空的。添加人物、场景或水果参考图吧。</div>`;
+  $('#globalAssetGallery').innerHTML=list.length?list.map(a=>`<article class="case-card">${mediaHtml(a,a.name)}<button class="case-delete" data-delete-asset="${a.id}" title="删除">×</button><div class="case-meta"><strong>${esc(a.name)}</strong><span>${esc(a.type)}</span></div>${a.note?`<div class="asset-note">${esc(a.note)}</div>`:''}<div class="asset-actions">${a.mediaType==='video'?'':`<button data-copy-asset="${a.id}">复制图片</button>`}<button data-download-asset="${a.id}">下载</button></div></article>`).join(''):`<div class="asset-empty">资产库还是空的。添加图片或 AI 视频案例吧。</div>`;
 }
-async function acceptAssetImage(file){if(!file?.type.startsWith('image/'))return;pendingAssetImage=await compressImage(file);$('#assetImagePreview').src=pendingAssetImage;$('#assetImagePreview').hidden=false;$('#assetPasteHint').hidden=true;}
-function downloadAsset(a){const link=document.createElement('a');link.href=a.image;link.download=`${a.name||'参考资产'}.jpg`;link.click();}
+async function acceptAssetImage(file){if(!file)return;if(file.type.startsWith('video/')&&!window.cloudSync?.isSignedIn()){alert('视频文件较大，请先登录云同步后再上传。');return}if(!file.type.startsWith('image/')&&!file.type.startsWith('video/'))return;pendingAssetFile=file;$('#assetPasteHint').hidden=true;if(file.type.startsWith('video/')){pendingAssetImage=URL.createObjectURL(file);$('#assetVideoPreview').src=pendingAssetImage;$('#assetVideoPreview').hidden=false;$('#assetImagePreview').hidden=true}else{pendingAssetImage=await compressImage(file);$('#assetImagePreview').src=pendingAssetImage;$('#assetImagePreview').hidden=false;$('#assetVideoPreview').hidden=true}}
+function downloadAsset(a){const link=document.createElement('a');link.href=a.image;link.download=`${a.name||'参考资产'}.${a.mediaType==='video'?'mp4':'jpg'}`;link.click();}
 async function copyAsset(a){try{const blob=await(await fetch(a.image)).blob();await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);showToast('参考图已复制')}catch{downloadAsset(a);showToast('浏览器不允许复制，已改为下载')}}
 
 document.addEventListener('click',e=>{
@@ -197,11 +490,11 @@ document.addEventListener('click',e=>{
   const edit=e.target.closest('[data-edit]'); if(edit)openEditor(prompts.find(x=>x.id===edit.dataset.edit));
   const copy=e.target.closest('[data-copy]'); if(copy)copyPrompt(prompts.find(x=>x.id===copy.dataset.copy));
   const caseBtn=e.target.closest('[data-cases]'); if(caseBtn)openCases(caseBtn.dataset.cases);
-  const delAsset=e.target.closest('[data-delete-asset]'); if(delAsset){if(confirm('确定删除这个参考资产吗？')){assets=assets.filter(a=>a.id!==delAsset.dataset.deleteAsset);saveAssets();renderAssets($('#assetPromptId').value);}}
+  const delAsset=e.target.closest('[data-delete-asset]'); if(delAsset){if(confirm('确定删除这个参考资产吗？')){const old=assets.find(a=>a.id===delAsset.dataset.deleteAsset);window.cloudSync?.deleteFile(old?.storagePath);assets=assets.filter(a=>a.id!==delAsset.dataset.deleteAsset);saveAssets();renderAssets($('#assetPromptId').value);}}
   const copyAssetBtn=e.target.closest('[data-copy-asset]'); if(copyAssetBtn)copyAsset(assets.find(a=>a.id===copyAssetBtn.dataset.copyAsset));
   const downloadAssetBtn=e.target.closest('[data-download-asset]'); if(downloadAssetBtn)downloadAsset(assets.find(a=>a.id===downloadAssetBtn.dataset.downloadAsset));
-  const delCase=e.target.closest('[data-delete-case]'); if(delCase){e.stopPropagation();if(confirm('确定删除这个效果案例吗？')){cases=cases.filter(c=>c.id!==delCase.dataset.deleteCase);saveCases();renderCases($('#casePromptId').value);}}
-  const view=e.target.closest('[data-view-case]'); if(view&&!e.target.closest('[data-delete-case]')){const c=cases.find(x=>x.id===view.dataset.viewCase);$('#caseViewContent').innerHTML=`${c.image?`<img src="${c.image}" alt="${esc(c.name)}">`:`<pre>${esc(c.text)}</pre>`}<div class="view-meta"><h3>${esc(c.name)}</h3><span>${esc(c.tool||'未记录工具')}</span>${c.note?`<p>${esc(c.note)}</p>`:''}</div>`;$('#caseViewDialog').showModal();}
+  const delCase=e.target.closest('[data-delete-case]'); if(delCase){e.stopPropagation();if(confirm('确定删除这个效果案例吗？')){const old=cases.find(c=>c.id===delCase.dataset.deleteCase);window.cloudSync?.deleteFile(old?.storagePath);cases=cases.filter(c=>c.id!==delCase.dataset.deleteCase);saveCases();renderCases($('#casePromptId').value);}}
+  const view=e.target.closest('[data-view-case]'); if(view&&!e.target.closest('[data-delete-case]')&&!e.target.closest('video')){const c=cases.find(x=>x.id===view.dataset.viewCase);$('#caseViewContent').innerHTML=`${c.image?mediaHtml(c,c.name):`<pre>${esc(c.text)}</pre>`}<div class="view-meta"><h3>${esc(c.name)}</h3><span>${esc(c.tool||'未记录工具')}</span>${c.note?`<p>${esc(c.note)}</p>`:''}</div>`;$('#caseViewDialog').showModal();}
   if(e.target.closest('[data-close]'))e.target.closest('dialog').close();
 });
 $('#searchInput').addEventListener('input',render); $('#sortSelect').addEventListener('change',render);
@@ -212,12 +505,12 @@ $('#chooseImageBtn').addEventListener('click',()=>$('#caseImageInput').click());
 $('#caseImageInput').addEventListener('change',e=>acceptImage(e.target.files[0]));
 $('#pasteZone').addEventListener('paste',e=>{const image=[...e.clipboardData.items].find(i=>i.type.startsWith('image/'));if(image){e.preventDefault();acceptImage(image.getAsFile());}});
 $('#cancelCaseBtn').addEventListener('click',resetCaseForm);
-$('#caseForm').addEventListener('submit',e=>{e.preventDefault();const text=$('#caseText').value.trim();if(!pendingCaseImage&&!text){alert('请先粘贴一张图片或一段文案。');return}cases.unshift({id:crypto.randomUUID(),promptId:$('#casePromptId').value,name:$('#caseName').value.trim(),tool:$('#caseTool').value.trim(),image:pendingCaseImage,text,note:$('#caseNote').value.trim(),created:Date.now()});saveCases();renderCases($('#casePromptId').value);resetCaseForm();$('#casePromptId').value=cases[0].promptId;showToast('效果案例已保存');});
+$('#caseForm').addEventListener('submit',async e=>{e.preventDefault();const text=$('#caseText').value.trim();if(!pendingCaseImage&&!text){alert('请先粘贴一张图片、选择视频或输入一段文案。');return}const id=crypto.randomUUID();let media={image:pendingCaseImage,mediaType:pendingCaseFile?.type.startsWith('video/')?'video':'image'};try{if(pendingCaseFile&&window.cloudSync?.isSignedIn()){showToast('正在上传素材…');media=await window.cloudSync.uploadFile(pendingCaseFile,'cases',id)}}catch(error){alert(`上传失败：${error.message}`);return}cases.unshift({id,promptId:$('#casePromptId').value,name:$('#caseName').value.trim(),tool:$('#caseTool').value.trim(),...media,text,note:$('#caseNote').value.trim(),created:Date.now()});saveCases();renderCases($('#casePromptId').value);resetCaseForm();$('#casePromptId').value=cases[0].promptId;showToast('效果案例已保存');});
 $('#chooseAssetBtn').addEventListener('click',()=>$('#assetImageInput').click());
 $('#assetImageInput').addEventListener('change',e=>acceptAssetImage(e.target.files[0]));
 $('#assetPasteZone').addEventListener('paste',e=>{const image=[...e.clipboardData.items].find(i=>i.type.startsWith('image/'));if(image){e.preventDefault();acceptAssetImage(image.getAsFile());}});
 $('#cancelAssetBtn').addEventListener('click',resetAssetForm);
-$('#assetForm').addEventListener('submit',e=>{e.preventDefault();if(!pendingAssetImage){alert('请先粘贴或选择一张参考图。');return}assets.unshift({id:crypto.randomUUID(),promptId:'',name:$('#assetName').value.trim(),type:$('#assetType').value,note:$('#assetNote').value.trim(),image:pendingAssetImage,created:Date.now()});saveAssets();resetAssetForm();$('#assetDialog').close();renderGlobalAssets();showToast('参考资产已保存到公共资产库');});
+$('#assetForm').addEventListener('submit',async e=>{e.preventDefault();if(!pendingAssetImage){alert('请先粘贴图片或选择图片 / 视频。');return}const id=crypto.randomUUID();let media={image:pendingAssetImage,mediaType:pendingAssetFile?.type.startsWith('video/')?'video':'image'};try{if(pendingAssetFile&&window.cloudSync?.isSignedIn()){showToast('正在上传素材…');media=await window.cloudSync.uploadFile(pendingAssetFile,'assets',id)}}catch(error){alert(`上传失败：${error.message}`);return}assets.unshift({id,promptId:'',name:$('#assetName').value.trim(),type:$('#assetType').value,note:$('#assetNote').value.trim(),...media,created:Date.now()});saveAssets();resetAssetForm();$('#assetDialog').close();renderGlobalAssets();showToast('参考资产已保存到公共资产库');});
 $('#promptForm').addEventListener('submit',e=>{e.preventDefault();const id=$('#promptId').value;const item={id:id||crypto.randomUUID(),title:$('#titleField').value.trim(),category:$('#categoryField').value,tags:$('#tagsField').value.split(/[,，]/).map(x=>x.trim()).filter(Boolean),content:$('#contentField').value.trim(),favorite:prompts.find(p=>p.id===id)?.favorite||false,updated:Date.now()};prompts=id?prompts.map(p=>p.id===id?item:p):[item,...prompts];savePrompts();dialog.close();showToast(id?'修改已保存':'提示词已添加');});
 $('#deletePromptBtn').addEventListener('click',()=>{const id=$('#promptId').value;if(id&&confirm('确定删除这条提示词吗？')){prompts=prompts.filter(p=>p.id!==id);savePrompts();dialog.close();showToast('已删除');}});
 $('#exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({version:3,prompts,cases,assets},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`我的提示词案例与资产备份-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href);showToast('提示词、案例和资产已导出');});
@@ -225,3 +518,8 @@ $('#importInput').addEventListener('change',async e=>{try{const data=JSON.parse(
 $('#resetBtn').addEventListener('click',()=>{if(confirm('恢复初始内容会替换当前所有提示词，确定继续吗？')){prompts=structuredClone(starterPrompts);savePrompts();dataDialog.close();showToast('已恢复初始内容');}});
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#searchInput').focus();}});
 render();
+window.promptPocket={
+  getData:()=>({prompts,cases,assets}),
+  replaceData(data){prompts=Array.isArray(data.prompts)?data.prompts:prompts;cases=Array.isArray(data.cases)?data.cases:cases;assets=Array.isArray(data.assets)?data.assets:assets;localStorage.setItem(STORAGE_KEY,JSON.stringify(prompts));localStorage.setItem(CASES_KEY,JSON.stringify(cases));localStorage.setItem(ASSETS_KEY,JSON.stringify(assets));render();},
+  showToast
+};

@@ -4,10 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f4f1eb">
+  <link rel="icon" href="assets/prompt-pocket.ico" sizes="any">
+  <link rel="icon" href="assets/prompt-pocket-icon.svg" type="image/svg+xml">
   <title>Prompt Pocket · 我的提示词</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="asset-styles.css">
   <link rel="stylesheet" href="mobile-fixes.css">
+  <link rel="stylesheet" href="cloud-styles.css">
 </head>
 <body>
   <div class="app-shell">
@@ -20,8 +23,8 @@
       <div class="nav-label">提示词分类</div>
       <nav id="categoryNav" aria-label="提示词分类"></nav>
       <div class="side-note">
-        <span>小提示</span>
-        所有内容只保存在当前浏览器，不会上传。
+        <span>存储状态</span>
+        <b id="storageNote">未登录时内容只保存在当前浏览器。</b>
       </div>
     </aside>
 
@@ -32,6 +35,7 @@
           <input id="searchInput" type="search" placeholder="搜索标题、标签或提示词…">
           <kbd>⌘ K</kbd>
         </label>
+        <div class="sync-control"><span id="syncStatus" data-state="local">仅本机</span><button class="ghost-btn" id="authBtn">登录同步</button></div>
         <button class="ghost-btn" id="importExportBtn">导入 / 导出</button>
         <button class="primary-btn" id="newPromptBtn">＋ 新建提示词</button>
       </header>
@@ -100,11 +104,12 @@
       </div>
       <label>粘贴图片或文案</label>
       <div id="pasteZone" class="paste-zone" tabindex="0">
-        <div id="pasteHint"><b>点击这里，然后按 Ctrl + V</b><span>支持复制的图片、生成文案，也可以点击选择图片</span></div>
+        <div id="pasteHint"><b>点击这里，然后按 Ctrl + V</b><span>支持图片、视频、生成文案，也可以点击选择文件</span></div>
         <img id="caseImagePreview" alt="待保存案例预览" hidden>
+        <video id="caseVideoPreview" controls muted hidden></video>
         <textarea id="caseText" rows="6" placeholder="复制文案后在这里粘贴；图片也可以粘贴到整个区域"></textarea>
-        <input id="caseImageInput" type="file" accept="image/*" hidden>
-        <button id="chooseImageBtn" type="button" class="ghost-btn">选择图片</button>
+        <input id="caseImageInput" type="file" accept="image/*,video/mp4,video/webm,video/quicktime" hidden>
+        <button id="chooseImageBtn" type="button" class="ghost-btn">选择图片 / 视频</button>
       </div>
       <label>效果备注<textarea id="caseNote" rows="2" placeholder="例如：果肉质感很好，但手部还需要优化"></textarea></label>
       <div class="dialog-actions"><span></span><button type="button" class="ghost-btn" id="cancelCaseBtn">取消添加</button><button type="submit" class="primary-btn">保存案例</button></div>
@@ -118,27 +123,40 @@
 
   <dialog id="assetDialog" class="case-dialog">
     <div class="dialog-head"><div><p class="eyebrow">REFERENCE ASSETS</p><h2 id="assetDialogTitle">参考资产</h2></div><button type="button" class="icon-btn" data-close>×</button></div>
-    <p class="dialog-copy">保存人物、场景和产品参考图。可以直接粘贴图片，使用时再复制或下载。</p>
+    <p class="dialog-copy">保存人物、场景、产品参考图和 AI 视频案例。图片可直接粘贴，视频可选择上传并在线播放。</p>
     <section id="assetGallery" class="case-gallery"></section>
     <form id="assetForm" class="case-form">
       <input id="assetPromptId" type="hidden">
       <div class="form-row">
         <label>资产名称<input id="assetName" required placeholder="例如：主播正面参考图"></label>
-        <label>资产类型<select id="assetType"><option>人物</option><option>场景</option><option>水果 / 产品</option><option>其他</option></select></label>
+        <label>资产类型<select id="assetType"><option>人物</option><option>场景</option><option>水果 / 产品</option><option>视频案例</option><option>其他</option></select></label>
       </div>
       <label>粘贴参考图</label>
       <div id="assetPasteZone" class="paste-zone" tabindex="0">
         <div id="assetPasteHint"><b>点击这里，然后按 Ctrl + V</b><span>也可以点击下方按钮选择图片</span></div>
         <img id="assetImagePreview" alt="待保存资产预览" hidden>
-        <input id="assetImageInput" type="file" accept="image/*" hidden>
-        <button id="chooseAssetBtn" type="button" class="ghost-btn">选择图片</button>
+        <video id="assetVideoPreview" controls muted hidden></video>
+        <input id="assetImageInput" type="file" accept="image/*,video/mp4,video/webm,video/quicktime" hidden>
+        <button id="chooseAssetBtn" type="button" class="ghost-btn">选择图片 / 视频</button>
       </div>
       <label>备注<textarea id="assetNote" rows="2" placeholder="例如：主图使用，服装和发型必须保持一致"></textarea></label>
       <div class="dialog-actions"><span></span><button type="button" class="ghost-btn" id="cancelAssetBtn">取消添加</button><button type="submit" class="primary-btn">保存资产</button></div>
     </form>
   </dialog>
 
+  <dialog id="authDialog" class="auth-dialog">
+    <form id="authForm">
+      <div class="dialog-head"><div><p class="eyebrow">CLOUD SYNC</p><h2>账户云同步</h2></div><button type="button" class="icon-btn" data-close>×</button></div>
+      <p class="dialog-copy">同一个账户可在不同电脑同步提示词、案例和资产。第一次登录会自动上传本机现有内容。</p>
+      <label>邮箱<input id="authEmail" type="email" required autocomplete="username" placeholder="你的登录邮箱"></label>
+      <label id="authPasswordWrap">密码<input id="authPassword" type="password" required autocomplete="current-password" placeholder="Supabase 账户密码"></label>
+      <div class="dialog-actions"><button id="logoutBtn" type="button" class="danger-btn" hidden>退出登录</button><span></span><button id="loginSubmitBtn" type="submit" class="primary-btn">登录并同步</button></div>
+    </form>
+  </dialog>
+
   <div id="toast" class="toast" role="status"></div>
-  <script src="app.js?v=7"></script>
+  <script src="vendor/supabase.js?v=1"></script>
+  <script src="app.js?v=15"></script>
+  <script src="cloud-sync.js?v=1"></script>
 </body>
 </html>

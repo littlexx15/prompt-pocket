@@ -20,6 +20,9 @@ for (const file of [
   "styles.css",
   "asset-styles.css",
   "mobile-fixes.css"
+  ,"cloud-styles.css"
+  ,"cloud-sync.js"
+  ,"vendor/supabase.js"
 ]) {
   embeddedFiles[`/${file}`] = await readFile(resolve(output, file), "utf8");
 }
