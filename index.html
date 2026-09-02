@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="asset-styles.css">
   <link rel="stylesheet" href="mobile-fixes.css">
-  <link rel="stylesheet" href="cloud-styles.css">
+  <link rel="stylesheet" href="cloud-styles.css?v=2">
 </head>
 <body>
   <div class="app-shell">
@@ -140,6 +140,7 @@
         <button id="chooseAssetBtn" type="button" class="ghost-btn">选择图片 / 视频</button>
       </div>
       <label>备注<textarea id="assetNote" rows="2" placeholder="例如：主图使用，服装和发型必须保持一致"></textarea></label>
+      <p id="assetUploadError" class="upload-error" hidden></p>
       <div class="dialog-actions"><span></span><button type="button" class="ghost-btn" id="cancelAssetBtn">取消添加</button><button type="submit" class="primary-btn">保存资产</button></div>
     </form>
   </dialog>
@@ -156,7 +157,7 @@
 
   <div id="toast" class="toast" role="status"></div>
   <script src="vendor/supabase.js?v=1"></script>
-  <script src="app.js?v=15"></script>
-  <script src="cloud-sync.js?v=1"></script>
+  <script src="app.js?v=16"></script>
+  <script src="cloud-sync.js?v=2"></script>
 </body>
 </html>

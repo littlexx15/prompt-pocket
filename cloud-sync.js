@@ -17,17 +17,55 @@
   function cleanName(name) { return (name || 'media').replace(/[^a-zA-Z0-9._-]/g, '_').slice(-80); }
   function mediaKind(type = '') { return type.startsWith('video/') ? 'video' : 'image'; }
 
+  function xhrJson(method, url, headers, body, onProgress) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, url, true);
+      Object.entries(headers).forEach(([key, value]) => xhr.setRequestHeader(key, value));
+      xhr.timeout = 180000;
+      if (onProgress) xhr.upload.onprogress = event => event.lengthComputable && onProgress(Math.round(event.loaded / event.total * 100));
+      xhr.onload = () => {
+        let data = {}; try { data = JSON.parse(xhr.responseText || '{}'); } catch {}
+        if (xhr.status >= 200 && xhr.status < 300) resolve(data);
+        else reject(new Error(data.message || data.error || `HTTP ${xhr.status}`));
+      };
+      xhr.onerror = () => reject(new Error('无法连接 Supabase。请换用 Chrome/Edge、关闭广告拦截扩展，或切换网络后重试。'));
+      xhr.ontimeout = () => reject(new Error('上传超过 3 分钟仍未完成，请压缩视频或切换网络后重试。'));
+      xhr.send(body);
+    });
+  }
+
+  async function uploadWithXhr(file, path, onProgress) {
+    const { data: sessionData } = await client.auth.getSession();
+    const token = sessionData.session?.access_token;
+    if (!token) throw new Error('登录状态已过期，请退出后重新登录。');
+    const encodedPath = path.split('/').map(encodeURIComponent).join('/');
+    const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}`, 'Content-Type': file.type, 'x-upsert': 'false' };
+    await xhrJson('POST', `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${encodedPath}`, headers, file, onProgress);
+    const signed = await xhrJson('POST', `${SUPABASE_URL}/storage/v1/object/sign/${BUCKET}/${encodedPath}`, { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, JSON.stringify({ expiresIn: 604800 }));
+    const partial = signed.signedURL || signed.signedUrl;
+    if (!partial) throw new Error('视频已上传，但生成播放地址失败，请刷新页面重试。');
+    return partial.startsWith('http') ? partial : `${SUPABASE_URL}/storage/v1${partial}`;
+  }
+
   async function signedUrl(path) {
     const { data, error } = await client.storage.from(BUCKET).createSignedUrl(path, 60 * 60 * 24 * 7);
     if (error) throw error;
     return data.signedUrl;
   }
-  async function uploadFile(file, scope, id) {
+  async function uploadFile(file, scope, id, onProgress) {
     if (!user) throw new Error('请先登录后再上传视频或同步素材。');
     const path = `${user.id}/${scope}/${id}-${Date.now()}-${cleanName(file.name)}`;
-    const { error } = await client.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: false });
-    if (error) throw error;
-    return { storagePath: path, mediaType: mediaKind(file.type), image: await signedUrl(path) };
+    let image;
+    try {
+      const { error } = await client.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: false });
+      if (error) throw error;
+      image = await signedUrl(path);
+    } catch (error) {
+      if (!/fetch|network|load failed/i.test(error?.message || '')) throw error;
+      image = await uploadWithXhr(file, path, onProgress);
+    }
+    return { storagePath: path, mediaType: mediaKind(file.type), image };
   }
   async function uploadDataUrl(dataUrl, scope, id) {
     const blob = await (await fetch(dataUrl)).blob();
